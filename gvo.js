@@ -1,15 +1,5 @@
-/*
-Author: Y. Gu 谷宇 <cv2019_gy@163.com>
-Boss: dr. N. Jansonius, <n.m.jansonius@umcg.nl>
-This is a prototype for online visual field test.
-This is for educational purposes only. 
-April 2024
 
-ToDo: 
-update website
-repGvo
-where should i send the results? email? printscreen?
-*/
+
 
 const acceptedResponseDeley = 1000; //response delayed after stimulus is shown must be < stimulusInterval - stimulusIntervalVariation
 const repGvo = 1; //not yet implemented
