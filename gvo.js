@@ -11,8 +11,8 @@ let indices = [];
 let myRandomSeq = [];
 let keyPressLog = [];
 //screen division in which stimuli are shown, numRows*numColumns, recommend numRows and numColumns = odd
-let numRows = 3;
-let numColumns = 3;
+let numRows = 5;
+let numColumns = 5;
 //console.log(screen.width);
 //console.log(screen.height);
 
