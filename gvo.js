@@ -10,14 +10,14 @@ let myParsedMatrix;
 let indices = []; 
 let myRandomSeq = [];
 let keyPressLog = [];
-//screen division in which stimuli are shown, numRows*numColumns, recommend numRows and numColumns = odd
+//screen division in which stimuli are shown, numRows*numColumns
 let numRows = 5;
 let numColumns = 5;
 //console.log(screen.width);
 //console.log(screen.height);
 
 //Declare myGvoMatrix, where all data will be stored, later parsed by gvoResult page via local storage
-//myGvoMatrix elements: [response counter, position top %, position left %, timestamp of appearance in rep 1, rep 2, ...
+//myGvoMatrix elements: [response counter, position top %, position left %, timestamp of appearance in rep 1, rep 2, ...]
 const myGvoMatrix = Array.from({length: numRows}, () => Array.from({ length: numColumns }, () => []));
 
 //function to shuffel array
