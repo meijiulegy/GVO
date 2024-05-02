@@ -3,9 +3,9 @@
 
 const acceptedResponseDeley = 1000; //response delayed after stimulus is shown must be < stimulusInterval - stimulusIntervalVariation
 const repGvo = 1; //not yet implemented
-const stimulusDuration = 200; //duration of a stimulus, must be << stimulus interval
-const stimulusInterval = 2000; //base interval between consecutive stimuli
-const stimulusIntervalVariation = 500; //random deviation of time of stimulus from the set interval
+const stimulusDuration = 100; //duration of a stimulus, must be << stimulus interval
+const stimulusInterval = 1500; //base interval between consecutive stimuli
+const stimulusIntervalVariation = 250; //random deviation of time of stimulus from the set interval
 let myParsedMatrix;
 let indices = []; 
 let myRandomSeq = [];
