@@ -1,1 +1,4 @@
-let stepCounter = 0;
+let myStepCounter = 0;
+console.log(myStepCounter);
+
+localStorage.setItem('myStepCounter', JSON.stringify(myStepCounter));
