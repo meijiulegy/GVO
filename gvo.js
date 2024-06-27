@@ -3,7 +3,7 @@ const myStoredStepCounter = localStorage.getItem('myStepCounter');
 myStepCounter = JSON.parse(myStoredStepCounter);
 console.log('myStepCounter = ' + myStepCounter);
 myStepCounter +=1;
-console.log(myStepCounter);
+console.log('myStepCounter = ' + myStepCounter);
 localStorage.setItem('myStepCounter', JSON.stringify(myStepCounter));
 
 const acceptedResponseDeley = 1000; //response delayed after stimulus is shown must be < stimulusInterval - stimulusIntervalVariation

@@ -9,12 +9,18 @@
 <body>
     <H1>Calibration Method 1</H1>
     <p>fixed distance in cm</p>
-    <p>placeholder text</p><br>
     
     <H3>Instructions:</H3>
-    <p>placeholder text</p>
-    <p>resize the the rectangle below to match a standard ID card</p>
-    <p>placeholder text</p><br>
+    <p>Press - or + to resize the card below to match the size of a standard ID/bank card</p><br>
+
+    <div class = "cardResizer">
+        <div class = "card">
+            <img class = "cardImg" id='bankCard' src = "card.jpg">
+        </div>
+        <button class = "smaller" onclick="makeSmaller()">-</button>
+        <button class = "bigger" onclick="makeBigger()">+</button>
+    </div><br>
+    
 
 
     <a href="gvo.html"  
@@ -22,7 +28,7 @@
                          'newwindow', 
                          'width=screen.width, height=200'); 
               return false;"
-    ><button>start test</button></a>
+    ><button id="startGVO" onclick="calculateBlindSpot()">start test</button></a>
     
     
     

@@ -7,7 +7,7 @@ method 4: blindspot with fixed dot
 
 const myStoredStepCounter = localStorage.getItem('myStepCounter');
 myStepCounter = JSON.parse(myStoredStepCounter);
-console.log(myStepCounter);
+console.log('myStepCounter = ' + myStepCounter);
 
 if (myStepCounter == 1){
     /*
@@ -20,8 +20,30 @@ if (myStepCounter == 1){
     -1.5 deg blindspot vertical position: - (7.8/86)*x pixel
     horizontal +9 deg: +tan(9)*297/86 *x pixel
     horizontal +21 deg: +tan(21)*297/86 *x pixel
-    
     */
+    const myCardImg = document.getElementById('bankCard');
+    let currentWidth = myCardImg.width;
+    let blindSpotX = 0;
+    console.log(currentWidth);
+
+    function makeSmaller(){
+        currentWidth -= 20;
+        myCardImg.style.width = currentWidth + 'px';
+        console.log('card width = ' + currentWidth);
+    }
+    function makeBigger(){
+        currentWidth += 20;
+        myCardImg.style.width = currentWidth + 'px';
+        console.log('card width = ' + currentWidth);
+    }
+
+    function calculateBlindSpot(){
+        blindSpotX = Math.floor(currentWidth * 0.9256);
+        console.log(blindSpotX);
+        localStorage.setItem('blindSpotX', JSON.stringify(blindSpotX));
+    }
+
+
 } else if (myStepCounter == 2){
     /*
     display k pixels on screen
