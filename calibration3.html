@@ -11,15 +11,27 @@
     <p>placeholder text</p><br>
     
     <H3>Instructions:</H3>
-    <p>placeholder text</p><br>
+    <p>Cover left eye</p>
+    <p>Fixate right eye on the yellow target</p>
+    <p>Upon clicking the 'Start Calibration', the red dot will start moving away from the yellow dot</p>
+    <p>With right eye fixated on the yellow target, press spacebar when red dot disappears</p>
+    <br>
 
+    <div class="blindSpotCalibrationField">
+        <div class = "circle" id="fixationPoint"></div>
+        <div class = "circle" id="blindSpotLocator"></div>
+        <audio id="beep" src="beep.mp3"></audio>
+    </div>
+    <br>
+
+    <button onclick="startCalibration(stopCalibration)">Start Calibration</button>
 
     <a href="gvo.html"  
         onclick="window.open('gvo.html', 
                          'newwindow', 
                          'width=screen.width, height=200'); 
               return false;"
-    ><button>start test</button></a>
+    ><button class="blindSpotCalibrationStartGVO">start test</button></a>
     
     
     

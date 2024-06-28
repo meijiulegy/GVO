@@ -42,6 +42,8 @@ if (myStepCounter == 1){
         console.log(blindSpotX);
         localStorage.setItem('blindSpotX', JSON.stringify(blindSpotX));
     }
+
+
 } else if (myStepCounter == 2){
     /*
     display k pixels on screen
@@ -52,7 +54,15 @@ if (myStepCounter == 1){
     document.getElementById('doubleArrow').style.width = 0.75*window.innerWidth + 'px';
 
 } else if (myStepCounter == 3){
-
+    function startCalibration(callback){
+        document.getElementById('blindSpotLocator').classList.add('locatorStartMoving');
+        setTimeout(() => {
+            callback();
+        }, 10000);
+    }
+    function stopCalibration(){
+        document.getElementById('blindSpotLocator').classList.remove('locatorStartMoving');
+    }
     //pass a blindspot position in pixle.
 } else if (myStepCounter == 4){
 
