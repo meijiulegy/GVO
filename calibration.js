@@ -42,14 +42,14 @@ if (myStepCounter == 1){
         console.log(blindSpotX);
         localStorage.setItem('blindSpotX', JSON.stringify(blindSpotX));
     }
-
-
 } else if (myStepCounter == 2){
     /*
     display k pixels on screen
     blindspot horizontal position: + 0.268*k pixel
     blindspot vertical position: - 0.0262*k pixel
     */
+    document.getElementById('lineDiv').style.height = 0.2*window.innerWidth + 'px'
+    document.getElementById('doubleArrow').style.width = 0.75*window.innerWidth + 'px';
 
 } else if (myStepCounter == 3){
 
