@@ -28,16 +28,19 @@
 
 
 #resultDiagram {
-    width: 400px; 
-    height: 400px; 
-    background-color: hsl(0, 0%, 100%); 
-    position: relative;
-    
-    border: solid 2px hsl(0, 0%, 15%)
-    
-  }
+  width: 400px; 
+  height: 400px; 
+  background-color: hsl(0, 0%, 100%); 
+  position: relative;
+  
+  border: solid 2px hsl(0, 0%, 15%)
+}
 
-  .section {
-    border: 1px solid #272727;
-    position: absolute;
-  }
+.section {
+  border: 1px solid #272727;
+  position: absolute;
+}
+
+.nextButton {
+  display: none;
+}

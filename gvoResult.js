@@ -3,6 +3,19 @@
 const myStoredMatrix = localStorage.getItem('myGvoMatrix');
 const myStoredNumColums = localStorage.getItem('numColumns');
 const myStoredNumRows = localStorage.getItem('numRows');
+const myStoredStepCounter = localStorage.getItem('myStepCounter');
+
+function showButton(){
+  let myStepCounter = JSON.parse(myStoredStepCounter);
+  if (myStepCounter >= 5) {
+    document.getElementById("goToEndInstructions").style.display = "block";
+  } else {
+    let buttonToShow = 'goToCalibration' + myStepCounter.toString();
+    document.getElementById(buttonToShow).style.display = "block";
+  }
+}
+
+
 if (myStoredMatrix) {
   myParsedMatrix = JSON.parse(myStoredMatrix);
   numRows = JSON.parse(myStoredNumRows);
@@ -39,6 +52,8 @@ function showResults(x, y) {
       resultDiagram.appendChild(section);
     }
   }
+
+  showButton();
 }
 showResults(numColumns,numRows);
 localStorage.removeItem('myGvoMatrix');

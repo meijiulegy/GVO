@@ -10,12 +10,44 @@
     <H1>GVO Results</H1>
     <div id="resultDiagram" class="square"></div><Br>
     
-    <a href="calibration1.html"  
+    <div class="nextMethodButtons">
+        <a href="calibration1.html"  
         onclick="window.open('calibration1.html', 
                          'newwindow', 
                          'width=screen.width, height=200'); 
               return false;"
-    ><button>Next Method</button></a>
+        ><button class="nextButton" id="goToCalibration1">Go to method 1</button></a>
+
+        <a href="calibration2.html"  
+        onclick="window.open('calibration2.html', 
+                         'newwindow', 
+                         'width=screen.width, height=200'); 
+              return false;"
+        ><button class="nextButton" id="goToCalibration2">Go to method 2</button></a>
+
+        <a href="calibration3.html"  
+        onclick="window.open('calibration3.html', 
+                         'newwindow', 
+                         'width=screen.width, height=200'); 
+              return false;"
+        ><button class="nextButton" id="goToCalibration3">Go to method 3</button></a>
+
+        <a href="calibration4.html"  
+        onclick="window.open('calibration4.html', 
+                         'newwindow', 
+                         'width=screen.width, height=200'); 
+              return false;"
+        ><button class="nextButton" id="goToCalibration4">Go to method 4</button></a>
+
+        <a href="endInstructions.html"  
+        onclick="window.open('endInstructions.html', 
+                         'newwindow', 
+                         'width=screen.width, height=200'); 
+              return false;"
+        ><button class="nextButton" id="goToEndInstructions">Go to end instructions</button></a>
+
+    </div>
+    
 
     <script src="gvoResult.js"></script>
 </body>
