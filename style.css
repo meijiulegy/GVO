@@ -27,7 +27,12 @@
   height: 500px;
 }
 
-.blindSpotCalibrationStartGVO {
+#blindSpotCalibrationStartGVO {
+  float:left;
+  display: none;
+}
+#redoBlindSpotCalibration {
+  float:left;
   display: none;
 }
 
@@ -54,9 +59,9 @@
   border-radius: 50%;
   background-color: red;
   position: relative;
+  float: left;
   top: 50%;
   left: 30%;
-  transform: translateX(100%);
   display: block;
 }
 .locatorStartMoving{
@@ -68,6 +73,19 @@
 @keyframes slideRight{
   to{transform: translateX(1300px)}
 
+}
+#blindSpotLocation {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: orange;
+  position: relative;
+  top: 60%;
+  left: 30%;
+  /*used to validate blindspot calculation during development, set translateX to blindspot-30px*/
+  transform: translateX(389px);
+  float: left;
+  display: none;
 }
 
 .nextButton {

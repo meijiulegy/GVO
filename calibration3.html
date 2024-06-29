@@ -20,18 +20,20 @@
     <div class="blindSpotCalibrationField">
         <div class = "circle" id="fixationPoint"></div>
         <div class = "circle" id="blindSpotLocator"></div>
+        <div class = "circle" id="blindSpotLocation"></div>
         <audio id="beep" src="beep.mp3"></audio>
     </div>
     <br>
 
-    <button onclick="startCalibration(stopCalibration)">Start Calibration</button>
+    <button id="startBlindSpotCalibration" onclick="startCalibration(stopCalibration)">Start Calibration</button>
+    <button id="redoBlindSpotCalibration" onclick="redoCalibration()">Redo Calibration</button>
 
     <a href="gvo.html"  
         onclick="window.open('gvo.html', 
                          'newwindow', 
                          'width=screen.width, height=200'); 
               return false;"
-    ><button class="blindSpotCalibrationStartGVO">start test</button></a>
+    ><button id="blindSpotCalibrationStartGVO">start test</button></a>
     
     
     

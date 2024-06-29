@@ -6,8 +6,10 @@ method 4: blindspot with fixed dot
 */
 
 const myStoredStepCounter = localStorage.getItem('myStepCounter');
-myStepCounter = JSON.parse(myStoredStepCounter);
+let myStepCounter = JSON.parse(myStoredStepCounter);
+//myStepCounter = 4; //for development
 console.log('myStepCounter = ' + myStepCounter);
+let blindSpotX;
 
 if (myStepCounter == 1){
     /*
@@ -23,7 +25,6 @@ if (myStepCounter == 1){
     */
     const myCardImg = document.getElementById('bankCard');
     let currentWidth = myCardImg.width;
-    let blindSpotX = 0;
     console.log(currentWidth);
 
     function makeSmaller(){
@@ -39,7 +40,7 @@ if (myStepCounter == 1){
 
     function calculateBlindSpot(){
         blindSpotX = Math.floor(currentWidth * 0.9256);
-        console.log(blindSpotX);
+        console.log('blindSpotX = ' + blindSpotX);
         localStorage.setItem('blindSpotX', JSON.stringify(blindSpotX));
     }
 
@@ -52,21 +53,64 @@ if (myStepCounter == 1){
     */
     document.getElementById('lineDiv').style.height = 0.2*window.innerWidth + 'px'
     document.getElementById('doubleArrow').style.width = 0.75*window.innerWidth + 'px';
+    blindSpotX = Math.floor(0.75*0.268*window.innerWidth);
+    console.log('blindSpotX = ' + blindSpotX);
+    localStorage.setItem('blindSpotX', JSON.stringify(blindSpotX));
+    
 
 } else if (myStepCounter == 3){
+    let fixationPositionX;
+    let blindSpotPositionX;
+    console.log('fixationPoint is at' + document.getElementById('fixationPoint').getBoundingClientRect().left);
+    console.log('blindSpotLocator is at' + document.getElementById('blindSpotLocator').getBoundingClientRect().left);
+    
     function startCalibration(callback){
+        fixationPositionX = document.getElementById('fixationPoint').getBoundingClientRect().left;
+        document.getElementById('blindSpotLocator').style.display = 'block';
         document.getElementById('blindSpotLocator').classList.add('locatorStartMoving');
         setTimeout(() => {
             callback();
         }, 10000);
+
+        document.addEventListener("keydown", event => {
+            //playAudio();
+            fixationPositionX = document.getElementById('fixationPoint').getBoundingClientRect().left;
+            blindSpotPositionX = document.getElementById('blindSpotLocator').getBoundingClientRect().left;
+            blindSpotX = Math.floor(blindSpotPositionX - fixationPositionX);
+            console.log('blindSpotX = ' + blindSpotX);
+            localStorage.setItem('blindSpotX', JSON.stringify(blindSpotX));
+            document.getElementById('blindSpotLocator').style.display = 'none';
+            document.getElementById('startBlindSpotCalibration').style.display = 'none';
+            //document.getElementById('redoBlindSpotCalibration').style.display = 'block';
+            document.getElementById('blindSpotCalibrationStartGVO').style.display = 'block';
+        })
     }
     function stopCalibration(){
         document.getElementById('blindSpotLocator').classList.remove('locatorStartMoving');
     }
-    //pass a blindspot position in pixle.
-} else if (myStepCounter == 4){
 
-    //pass a blindspot position in pixle.
+    function redoCalibration(){
+        document.getElementById('blindSpotLocator').pause();
+        //startCalibration(stopCalibration());
+    }
+
+
+    const beep = document.getElementById("beep");
+    function playAudio() {
+        beep.play();
+    }
+
+
+} else if (myStepCounter == 4){
+    let fixationPositionX;
+    let blindSpotPositionX;
+    document.getElementById('blindSpotLocator').style.left = "55%";
+    fixationPositionX = document.getElementById('fixationPoint').getBoundingClientRect().left;
+    blindSpotPositionX = document.getElementById('blindSpotLocator').getBoundingClientRect().left;
+    blindSpotX = Math.floor(blindSpotPositionX - fixationPositionX);
+    console.log('blindSpotX = ' + blindSpotX);
+    localStorage.setItem('blindSpotX', JSON.stringify(blindSpotX));
+
 } else {
     console.log("Error. Please start over at /index.html. Do not return to previous page.")
 }
