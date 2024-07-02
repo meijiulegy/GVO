@@ -4,10 +4,10 @@ const myStoredMatrix = localStorage.getItem('myGvoMatrix');
 const myStoredNumColums = localStorage.getItem('numColumns');
 const myStoredNumRows = localStorage.getItem('numRows');
 const myStoredStepCounter = localStorage.getItem('myStepCounter');
+let myStepCounter = JSON.parse(myStoredStepCounter);
 const resultCircleDiameter = "10px";
 
 function showButton(){
-  let myStepCounter = JSON.parse(myStoredStepCounter);
   if (myStepCounter >= 5) {
     document.getElementById("goToEndInstructions").style.display = "block";
   } else {
@@ -56,23 +56,24 @@ function showResults(x, y) {
     }
   }
 
-  for (let i = 0; i < 9; i++) {
-    const section = document.createElement('div');
-    section.classList.add('section');
-    section.style.width = resultCircleDiameter; //sectionWidth - 1 + 'px';
-    section.style.height = resultCircleDiameter; //sectionHeight - 1 + 'px';
-    section.style.borderRadius = "50%";
-    section.style.top = myParsedMatrix[numRows][i][1];
-    section.style.left = myParsedMatrix[numRows][i][2];
-    section.style.transform = "translate(-50%, -50%)";
-    
-    //color missed section black
-    if (myParsedMatrix[numRows][i][0] === 0) {
-        section.style.backgroundColor = 'black';
+  if (myStepCounter != 1) {
+    for (let i = 0; i < 9; i++) {
+      const section = document.createElement('div');
+      section.classList.add('section');
+      section.style.width = resultCircleDiameter; //sectionWidth - 1 + 'px';
+      section.style.height = resultCircleDiameter; //sectionHeight - 1 + 'px';
+      section.style.borderRadius = "50%";
+      section.style.top = myParsedMatrix[numRows][i][1];
+      section.style.left = myParsedMatrix[numRows][i][2];
+      section.style.transform = "translate(-50%, -50%)";
+      
+      //color missed section black
+      if (myParsedMatrix[numRows][i][0] === 0) {
+          section.style.backgroundColor = 'black';
+      }
+      //bundle
+      resultDiagram.appendChild(section);
     }
-
-    //bundle
-    resultDiagram.appendChild(section);
   }
 
   //add a center section with yellow color if even by even grid

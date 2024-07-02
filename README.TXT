@@ -11,6 +11,8 @@ repGvo //not yet implemented
 stimulusDuration //duration of a stimulus, must be << stimulus interval
 stimulusInterval //base interval between consecutive stimuli
 stimulusIntervalVariation //random deviation of time of stimulus from the set interval 
+angleFromBlindSpot //angle of stimuli around the blindspot 
+testFieldHalfWidth //angle of the entire field
 
 
 ToDo: 

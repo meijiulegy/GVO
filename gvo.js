@@ -17,7 +17,7 @@ const acceptedResponseDeley = 1000; //response delayed after stimulus is shown m
 const repGvo = 1; //not yet implemented
 const stimulusDuration = 100; //duration of a stimulus, must be << stimulus interval
 const stimulusInterval = 2000; //default 1500, base interval between consecutive stimuli
-const stimulusIntervalVariation = 0; //default 250, random deviation of time of stimulus from the set interval
+const stimulusIntervalVariation = 400; //default 250, random deviation of time of stimulus from the set interval
 let myParsedMatrix;
 let indices = []; 
 let myRandomSeq = [];
@@ -28,7 +28,7 @@ let numColumns = 4;
 const angleFromBlindSpot = 6; //angle tested around blindspot, default 6 deg.
 
 let testFieldHalfWidth = 2 * blindSpotX; //test field set to 2 * blindspot ~ 30 degree
-let testFieldHalfHeight = 2 * blindSpotX * (screen.availHeight / screen.availWidth); //test field height adjusted to screen height/width ratio. cav: report screen height and width for analysis.
+let testFieldHalfHeight = testFieldHalfWidth* (screen.availHeight / screen.availWidth); //test field height adjusted to screen height/width ratio. cav: report screen height and width for analysis.
 let marginLeft = 0.5 - testFieldHalfWidth/screen.availWidth;
 let marginTop = 0.5 - testFieldHalfHeight/screen.availHeight;
 console.log(screen.availWidth);
