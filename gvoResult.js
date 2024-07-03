@@ -6,6 +6,9 @@ const myStoredNumRows = localStorage.getItem('numRows');
 const myStoredStepCounter = localStorage.getItem('myStepCounter');
 let myStepCounter = JSON.parse(myStoredStepCounter);
 const resultCircleDiameter = "10px";
+const resultDiagramWidth = 600;
+let resultDiagramHeight = resultDiagramWidth * screen.availHeight/screen.availWidth; //change to = resultDiagramWidth for a square diagram
+
 
 function showButton(){
   if (myStepCounter >= 5) {
@@ -28,19 +31,23 @@ if (myStoredMatrix) {
 
 //devide the result diagram, then color the sections
 const resultDiagram = document.getElementById('resultDiagram');
-function showResults(x, y) {
-  const sectionWidth = resultDiagram.offsetWidth / x;
-  const sectionHeight = resultDiagram.offsetHeight / y;
+resultDiagram.style.width = resultDiagramWidth + 'px';
+resultDiagram.style.height = resultDiagramHeight + 'px';
+function showResults(numRows, numColumns) {
+  //const sectionWidth = resultDiagram.offsetWidth / numColumns; 
+  //const sectionHeight = resultDiagram.offsetHeight / numRows;
 
-  for (let i = 0; i < y; i++) {
-    for (let j = 0; j < x; j++) {
+  for (let i = 0; i < numRows; i++) {
+    for (let j = 0; j < numColumns; j++) {
       const section = document.createElement('div');
       section.classList.add('section');
       section.style.width = resultCircleDiameter; //sectionWidth - 1 + 'px';
       section.style.height = resultCircleDiameter; //sectionHeight - 1 + 'px';
       section.style.borderRadius = "50%";
-      section.style.left = (j + 0.5) * sectionWidth - 2 + 'px';
-      section.style.top = (i + 0.5) * sectionHeight - 2 + 'px';
+      //section.style.left = (j + 0.5) * sectionWidth - 2 + 'px';
+      //section.style.top = (i + 0.5) * sectionHeight - 2 + 'px';
+      section.style.top = myParsedMatrix[i][j][1];
+      section.style.left = myParsedMatrix[i][j][2];
       section.style.transform = "translate(-50%, -50%)";
       
       //color missed section black
@@ -93,5 +100,5 @@ function showResults(x, y) {
 
   showButton();
 }
-showResults(numColumns,numRows);
+showResults(numRows,numColumns);
 localStorage.removeItem('myGvoMatrix');

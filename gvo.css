@@ -15,7 +15,7 @@ body {
     border-radius: 50%;
     background-color: yellow;
     position: absolute;
-    /* Default position */
+    
     top: 50%;
     left: 50%;
 }
@@ -26,7 +26,6 @@ body {
     border-radius: 50%;
     background-color: hsl(0, 0%, 100%);
     position: absolute;
-    /* Default position */
     top: 40%;
     left: 40%;
     display: none;
@@ -41,7 +40,7 @@ body {
     /* Default position */
     top: 50%;
     left: 50%;
-    transform: translateX(200px);
+    transform: translateX(400px);
     display: none;
 }
 

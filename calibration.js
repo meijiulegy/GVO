@@ -9,39 +9,41 @@ const myStoredStepCounter = localStorage.getItem('myStepCounter');
 let myStepCounter = JSON.parse(myStoredStepCounter);
 //myStepCounter = 1; //for development
 console.log('myStepCounter = ' + myStepCounter);
+localStorage.setItem('myStepCounter', JSON.stringify(myStepCounter)); // for development
 let blindSpotX;
 
 if (myStepCounter == 1){
     /*
     standard ID card = 86*54mm, A4 paper = 297*210mm, 
     tan(15 deg) = 0.268,  297mm*tan(15deg) = 79.6mm, 
-    tan(1.5deg) = 0.0262, 297mm*tan(1.5deg) = 7.8mm
     let user resize a rectangle, length = x pixel, calibration: (x/86) pixel/mm
     at distance = 297mm
     +15 deg blindspot horizontal position: + (79.6/86)*x pixel
-    -1.5 deg blindspot vertical position: - (7.8/86)*x pixel
-    horizontal +9 deg: +tan(9)*297/86 *x pixel
-    horizontal +21 deg: +tan(21)*297/86 *x pixel
     */
     const myCardImg = document.getElementById('bankCard');
     let currentWidth = myCardImg.width;
     console.log(currentWidth);
 
     function makeSmaller(){
-        currentWidth -= 20;
+        currentWidth -= 10;
         myCardImg.style.width = currentWidth + 'px';
         console.log('card width = ' + currentWidth);
     }
     function makeBigger(){
-        currentWidth += 20;
+        currentWidth += 10;
         myCardImg.style.width = currentWidth + 'px';
         console.log('card width = ' + currentWidth);
     }
 
     function calculateBlindSpot(){
-        blindSpotX = Math.floor(currentWidth * 0.9256);
+        blindSpotX = Math.floor(currentWidth * 297 / 86 * getTanDeg(15));
         console.log('blindSpotX = ' + blindSpotX);
         localStorage.setItem('blindSpotX', JSON.stringify(blindSpotX));
+    }
+
+    function getTanDeg(deg) {
+        const rad = (deg * Math.PI) / 180;
+        return Math.tan(rad);
     }
 
 
@@ -104,7 +106,7 @@ if (myStepCounter == 1){
 } else if (myStepCounter == 4){
     let fixationPositionX;
     let blindSpotPositionX;
-    document.getElementById('blindSpotLocator').style.left = "55%";
+    document.getElementById('blindSpotLocator').style.left = "75%";
     fixationPositionX = document.getElementById('fixationPoint').getBoundingClientRect().left;
     blindSpotPositionX = document.getElementById('blindSpotLocator').getBoundingClientRect().left;
     blindSpotX = Math.floor(blindSpotPositionX - fixationPositionX);

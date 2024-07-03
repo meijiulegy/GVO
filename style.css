@@ -48,7 +48,7 @@
   background-color: yellow;
   position: relative;
   top: 50%;
-  left: 30%;
+  left: 50%;
   float: left;
   display: block;
 }
@@ -61,7 +61,7 @@
   position: relative;
   float: left;
   top: 50%;
-  left: 30%;
+  left: 50%;
   display: block;
 }
 .locatorStartMoving{

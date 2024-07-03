@@ -3,12 +3,13 @@ const myStoredStepCounter = localStorage.getItem('myStepCounter');
 let myStepCounter = JSON.parse(myStoredStepCounter);
 console.log('myStepCounter = ' + myStepCounter);
 myStepCounter +=1;
+console.log('myStepCounter + 1 = ' + myStepCounter);
 localStorage.setItem('myStepCounter', JSON.stringify(myStepCounter));
 const myStoredBlindSpotX = localStorage.getItem('blindSpotX');
 let blindSpotX = JSON.parse(myStoredBlindSpotX);
 //blindSpotX = 400; //for development
 //myStepCounter = 3; //for development
-console.log('blindSpotX = ' + blindSpotX);
+console.log('blindSpotX at load = ' + blindSpotX);
 
 
 
@@ -16,15 +17,15 @@ console.log('blindSpotX = ' + blindSpotX);
 const acceptedResponseDeley = 1000; //response delayed after stimulus is shown must be < stimulusInterval - stimulusIntervalVariation
 const repGvo = 1; //not yet implemented
 const stimulusDuration = 100; //duration of a stimulus, must be << stimulus interval
-const stimulusInterval = 2000; //default 1500, base interval between consecutive stimuli
-const stimulusIntervalVariation = 400; //default 250, random deviation of time of stimulus from the set interval
+const stimulusInterval = 1500; //default 1500, base interval between consecutive stimuli
+const stimulusIntervalVariation = 200; //default 250, random deviation of time of stimulus from the set interval
 let myParsedMatrix;
 let indices = []; 
 let myRandomSeq = [];
 let keyPressLog = [];
 //screen division in which stimuli are shown, numRows*numColumns
-let numRows = 4;
-let numColumns = 4;
+let numRows = 3;
+let numColumns = 3;
 const angleFromBlindSpot = 6; //angle tested around blindspot, default 6 deg.
 
 let testFieldHalfWidth = 2 * blindSpotX; //test field set to 2 * blindspot ~ 30 degree
@@ -121,7 +122,7 @@ for (let i = 0; i < 3; i++) {
         myGvoMatrix[numRows][3*i + j][0] = 0;
         myGvoMatrix[numRows][3*i + j][1] = String(Math.round((0.5 + userDistance * getTanDeg(1.5 + (i - 1) * angleFromBlindSpot)/screen.availHeight)*100)) + "%"; //%top
         myGvoMatrix[numRows][3*i + j][2] = String(Math.round((0.5 + userDistance * getTanDeg(15 + (j - 1) * angleFromBlindSpot)/screen.availWidth)*100)) + "%"; //%left
-        if (myStepCounter != 1){
+        if (myStepCounter != 1){ //not including in practice round
             indices.push([numRows, 3*i + j]);
         }
         
@@ -148,6 +149,7 @@ function runGvo() {
                 //document.getElementById('stimulus').style.display = 'block';
                 generateResults();
                 console.log(myGvoMatrix); 
+                console.log('blindSpotX after test = ' + blindSpotX);
                 localStorage.setItem('myGvoMatrix', JSON.stringify(myGvoMatrix));
                 localStorage.setItem('numRows', JSON.stringify(numRows));
                 localStorage.setItem('numColumns', JSON.stringify(numColumns));
