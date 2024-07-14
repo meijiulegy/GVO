@@ -16,15 +16,26 @@
     <p>Test field set to +/- 30deg horizontal. Practice round assumes blindspot at +1/4 screen width.</p><br>
     <H3>Instructie:</H3>
     <p>Do not return to previous pages during the test</p>
-    <p>Press button below to begin</p>
-    <p>Cover one eye, fixate the other on the yellow target, press spacebar when you see a stimulus</p>
+
+    <p>Choose below which eye you wish to test. The same eye will be used for all tests.</p>
+    <p>Then press button to begin with the practice round</p>
+    <p>During the test, cover the other eye, fixate the chosen test eye on the yellow target, press spacebar when you see a stimulus</p><br>
+
+    <p>Choose which eye to test:</p>
+    <input type="radio" name="testEye" id="leftEye" value="-1">
+    <label for="leftEye">Left eye</label>
+    <input type="radio" name="testEye" id="rightEye" value="1">
+    <label for="rightEye">Right eye</label>
+    <br>
+    <br>
+
 
     <a href="gvo.html"  
         onclick="window.open('gvo.html', 
                          'newwindow', 
                          'width=screen.width, height=200'); 
               return false;"
-    ><button>To practice round</button></a>
+    ><button disabled id="practiceRoundButton" onclick="registerTestEye()">To practice round</button></a>
     
     
     

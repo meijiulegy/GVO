@@ -1,0 +1,9 @@
+.container {
+    display: flex;
+    align-items: center;
+}
+
+.copy-button {
+    margin-left: 10px;
+}
+

@@ -5,28 +5,31 @@ console.log('myStepCounter = ' + myStepCounter);
 myStepCounter +=1;
 console.log('myStepCounter + 1 = ' + myStepCounter);
 localStorage.setItem('myStepCounter', JSON.stringify(myStepCounter));
-const myStoredBlindSpotX = localStorage.getItem('blindSpotX');
-let blindSpotX = JSON.parse(myStoredBlindSpotX);
+//const myStoredBlindSpotX = localStorage.getItem('blindSpotX');
+const myStoredDataHandle = localStorage.getItem('myDataHandle');
+const myDataHandle = JSON.parse(myStoredDataHandle);
+let blindSpotX = myDataHandle[myStepCounter-1][0];
 //blindSpotX = 400; //for development
+//myDataHandle[0][2] = -1;//for development
 //myStepCounter = 3; //for development
 console.log('blindSpotX at load = ' + blindSpotX);
 
-
-
-
 const acceptedResponseDeley = 1000; //response delayed after stimulus is shown must be < stimulusInterval - stimulusIntervalVariation
 const repGvo = 1; //not yet implemented
-const stimulusDuration = 100; //duration of a stimulus, must be << stimulus interval
-const stimulusInterval = 1500; //default 1500, base interval between consecutive stimuli
-const stimulusIntervalVariation = 200; //default 250, random deviation of time of stimulus from the set interval
+const stimulusDuration = 200; //duration of a stimulus, must be << stimulus interval
+const stimulusInterval = 300; //default 1500, base interval between consecutive stimuli
+const stimulusIntervalVariation = 0; //default 250, random deviation of time of stimulus from the set interval
 let myParsedMatrix;
 let indices = []; 
 let myRandomSeq = [];
 let keyPressLog = [];
 //screen division in which stimuli are shown, numRows*numColumns
-let numRows = 3;
-let numColumns = 3;
-const angleFromBlindSpot = 6; //angle tested around blindspot, default 6 deg.
+let numRows = 4;
+let numColumns = 4;
+myDataHandle[0][3] = numRows;
+myDataHandle[0][4] = numColumns;
+const angleFromBlindSpot = 4; //angle tested around blindspot, default 6 deg.
+const angleSkipFromBlindSpot = 2.2 * angleFromBlindSpot; //grid points to skip due to close angle with blindspot
 
 let testFieldHalfWidth = 2 * blindSpotX; //test field set to 2 * blindspot ~ 30 degree
 let testFieldHalfHeight = testFieldHalfWidth* (screen.availHeight / screen.availWidth); //test field height adjusted to screen height/width ratio. cav: report screen height and width for analysis.
@@ -92,25 +95,12 @@ window.onload = function() {
 
 //generate an array myRandomSeq containing random sequence of indices of myGvoMatrix, skipping center index
 indices = [];
-for (let i = 0; i < numRows; i++) {
-    for (let j = 0; j < numColumns; j ++) {
-        //myGvoMatrix elements: [response counter, position top %, position left %, timestamp of appearance in rep 1, rep 2, ...
-        myGvoMatrix[i][j][0] = 0;
-        //myGvoMatrix[i][j][1] = String(Math.round((1/numRows/2 + 1/numRows*i)*100)) + "%";
-        //myGvoMatrix[i][j][2] = String(Math.round((1/numColumns/2 + 1/numColumns*j)*100)) + "%";
-        myGvoMatrix[i][j][1] = String(Math.round((((1/numRows/2 + 1/numRows*i)*2*testFieldHalfHeight/screen.availHeight) + marginTop)*100)) + "%";
-        myGvoMatrix[i][j][2] = String(Math.round((((1/numColumns/2 + 1/numColumns*j)*2*testFieldHalfWidth/screen.availWidth) + marginLeft)*100)) + "%";
-        //skip center block only if odd by odd divisions
-        if ((numRows % 2 == 0 || numColumns % 2 == 0) || (i != Math.floor(numRows/2) || j != Math.floor(numColumns/2))){  
-            indices.push([i, j]);
-        }
-    }
-}
 //set position of 9 stimuli around blindspot. insert into the 9 element array in myGVOmatrix
-/* position as follow, [1,1] is blindspot, at (+15deg, -1.5deg), other positions are 6 deg apart.
-[0,0] [0,1] [0,2]
-[1,0] [1,1] [1,2]
-[2,0] [2,1] [2,2]
+/* position as follow, [1,1] is blindspot, at (+15deg, -1.5deg) for right eye, (-15deg, -1.5deg) for left eye, other positions are angleFromBlindSpot deg apart:
+[i,j]OS:                  OD:
+[0,2] [0,1] [0,0]         [0,0] [0,1] [0,2]
+[1,2] [1,1] [1,0]         [1,0] [1,1] [1,2]
+[2,2] [2,1] [2,0]         [2,0] [2,1] [2,2]
 */
 function getTanDeg(deg) {
     const rad = (deg * Math.PI) / 180;
@@ -121,11 +111,53 @@ for (let i = 0; i < 3; i++) {
     for (let j = 0; j < 3; j++) {
         myGvoMatrix[numRows][3*i + j][0] = 0;
         myGvoMatrix[numRows][3*i + j][1] = String(Math.round((0.5 + userDistance * getTanDeg(1.5 + (i - 1) * angleFromBlindSpot)/screen.availHeight)*100)) + "%"; //%top
-        myGvoMatrix[numRows][3*i + j][2] = String(Math.round((0.5 + userDistance * getTanDeg(15 + (j - 1) * angleFromBlindSpot)/screen.availWidth)*100)) + "%"; //%left
+        myGvoMatrix[numRows][3*i + j][2] = String(Math.round((0.5 + myDataHandle[0][2] * userDistance * getTanDeg(15 + (j - 1) * angleFromBlindSpot)/screen.availWidth)*100)) + "%"; //%left
         if (myStepCounter != 1){ //not including in practice round
             indices.push([numRows, 3*i + j]);
         }
         
+    }
+}
+//set position of grid stimulus, push into indices. Skip stimulus close to the blindspot, while setting response counter of such stimuli to -1, as a marker for skip when generating results.
+//determine skip box
+let skipTopMargin = Math.round((0.5 + userDistance * getTanDeg(1.5 - angleSkipFromBlindSpot)/screen.availHeight)*100);
+let skipBottomMargin = Math.round((0.5 + userDistance * getTanDeg(1.5 + angleSkipFromBlindSpot)/screen.availHeight)*100);
+let skipCentralMargin = Math.round((0.5 + myDataHandle[0][2] * userDistance * getTanDeg(15 - angleSkipFromBlindSpot)/screen.availWidth)*100);
+let skipLateralMargin = Math.round((0.5 + myDataHandle[0][2] * userDistance * getTanDeg(15 + angleSkipFromBlindSpot)/screen.availWidth)*100);
+let skipLeftMargin;
+let skipRightMargin;
+if (skipCentralMargin < skipLateralMargin){
+    skipLeftMargin = skipCentralMargin;
+    skipRightMargin = skipLateralMargin;
+}else{
+    skipLeftMargin = skipLateralMargin;
+    skipRightMargin = skipCentralMargin;
+}
+
+let gridTop;
+let gridLeft;
+for (let i = 0; i < numRows; i++) {
+    for (let j = 0; j < numColumns; j ++) {
+        //myGvoMatrix elements: [response counter, position top %, position left %, timestamp of appearance in rep 1, rep 2, ...]
+        gridTop = Math.round((((1/numRows/2 + 1/numRows*i)*2*testFieldHalfHeight/screen.availHeight) + marginTop)*100)
+        gridLeft = Math.round((((1/numColumns/2 + 1/numColumns*j)*2*testFieldHalfWidth/screen.availWidth) + marginLeft)*100)
+        //skipping around blindspot
+        if (myStepCounter != 1 && gridTop > skipTopMargin && gridTop < skipBottomMargin && gridLeft > skipLeftMargin && gridLeft < skipRightMargin) {
+            myGvoMatrix[i][j][0] = -1;
+            myGvoMatrix[i][j][1] = String(gridTop) + "%";
+            myGvoMatrix[i][j][2] = String(gridLeft) + "%"; 
+        //skipping center
+        }else if (numRows % 2 == 1 && numColumns % 2 == 1 && i == Math.floor(numRows/2) && j == Math.floor(numColumns/2)) {
+            myGvoMatrix[i][j][0] = 0;
+            myGvoMatrix[i][j][1] = String(gridTop) + "%";
+            myGvoMatrix[i][j][2] = String(gridLeft) + "%";
+        //push rest
+        }else {
+            myGvoMatrix[i][j][0] = 0;
+            myGvoMatrix[i][j][1] = String(gridTop) + "%";
+            myGvoMatrix[i][j][2] = String(gridLeft) + "%";
+            indices.push([i, j])
+        }
     }
 }
 console.log(myGvoMatrix);
@@ -144,11 +176,14 @@ function runGvo() {
         if (i === myRandomSeq.length){
             //at the end of run: show results button, generate results, local storage
             setTimeout(function(){
+                document.removeEventListener("keydown", keyDownEvent);
                 document.getElementById('showResults').style.display = 'block';
                 //setPosition(myGvoMatrix[numRows][4][1],myGvoMatrix[numRows][4][2]); //for development, show blindspot at the end
                 //document.getElementById('stimulus').style.display = 'block';
                 generateResults();
-                console.log(myGvoMatrix); 
+                myDataHandle[myStepCounter-1][1] = myGvoMatrix;
+                localStorage.setItem('myDataHandle', JSON.stringify(myDataHandle));
+                console.log(myDataHandle);
                 console.log('blindSpotX after test = ' + blindSpotX);
                 localStorage.setItem('myGvoMatrix', JSON.stringify(myGvoMatrix));
                 localStorage.setItem('numRows', JSON.stringify(numRows));
@@ -167,10 +202,11 @@ function runGvo() {
 runGvo();
     
 //log timestamp of all key presses in an array
-document.addEventListener("keydown", event => {
+document.addEventListener("keydown", keyDownEvent);
+function keyDownEvent(){
     playAudio();
     keyPressLog.push(Date.now());
-})
+}
 
 //register a +1 if at least 1 key press is logged within acceptedResponseDeley after the stimulus is shown
 function generateResults(){

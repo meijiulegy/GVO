@@ -4,14 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>End Instructions</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="endInstructions.css">
 </head>
 <body>
     <H1>End Instructions</H1>
-    <p>Test is finished</p>
-    <p>Thank you for your participation</p>
-    <p>For questions, please send an email to cv2019_gy@163.com</p><br>
+    <p>Test is finished.</p>
+    <p>Thank you for your participation.</p>
+    <p>You may decide whether you would like to send me your test results.</p>
+    <p>If you choose to be included in the study, press the copy button below to copy the string.</p>
+    <p>Then paste it in an email sent to y.gu@umcg.nl</p><br>
+    <div class="container">
+        <input type="text" id="dataField" readonly>
+        <button class="copy-button" onclick="copyToClipboard()">Copy</button>
+    </div>
 
-    <script src="index.js"></script>
+    <script src="endInstructions.js"></script>
 </body>
 </html>

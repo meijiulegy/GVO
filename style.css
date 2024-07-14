@@ -28,11 +28,9 @@
 }
 
 #blindSpotCalibrationStartGVO {
-  float:left;
   display: none;
 }
 #redoBlindSpotCalibration {
-  float:left;
   display: none;
 }
 
@@ -49,20 +47,22 @@
   position: relative;
   top: 50%;
   left: 50%;
-  float: left;
   display: block;
 }
 
+:root {
+  --blindSpotMovement: 1300px;
+}
 #blindSpotLocator {
   width: 15px;
   height: 15px;
   border-radius: 50%;
   background-color: red;
   position: relative;
-  float: left;
   top: 50%;
   left: 50%;
-  display: block;
+  transform: translateY(-100%);
+  display: none;
 }
 .locatorStartMoving{
   animation-name: slideRight;
@@ -71,8 +71,7 @@
   animation-timing-function: linear;
 }
 @keyframes slideRight{
-  to{transform: translateX(1300px)}
-
+  to{transform: translateX(var(--blindSpotMovement))}
 }
 #blindSpotLocation {
   width: 15px;
@@ -80,11 +79,10 @@
   border-radius: 50%;
   background-color: orange;
   position: relative;
-  top: 60%;
-  left: 30%;
+  top: 50%;
+  left: 50%;
   /*used to validate blindspot calculation during development, set translateX to blindspot-30px*/
-  transform: translateX(389px);
-  float: left;
+  transform: translateY(-100%);
   display: none;
 }
 
@@ -104,6 +102,10 @@
 .section {
   border: 1px solid #272727;
   position: absolute;
+}
+
+input[type="radio"]{
+  margin: 0 0 0 25px;
 }
 
 

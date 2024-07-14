@@ -1,44 +1,52 @@
 
  //parse stored data
-const myStoredMatrix = localStorage.getItem('myGvoMatrix');
-const myStoredNumColums = localStorage.getItem('numColumns');
-const myStoredNumRows = localStorage.getItem('numRows');
+const myStoredDataHandle = localStorage.getItem('myDataHandle');
+const myDataHandle = JSON.parse(myStoredDataHandle);
+
 const myStoredStepCounter = localStorage.getItem('myStepCounter');
 let myStepCounter = JSON.parse(myStoredStepCounter);
 const resultCircleDiameter = "10px";
 const resultDiagramWidth = 600;
 let resultDiagramHeight = resultDiagramWidth * screen.availHeight/screen.availWidth; //change to = resultDiagramWidth for a square diagram
-
+let buttonToShow;
 
 function showButton(){
   if (myStepCounter >= 5) {
     document.getElementById("goToEndInstructions").style.display = "block";
   } else {
-    let buttonToShow = 'goToCalibration' + myStepCounter.toString();
+    buttonToShow = 'goToCalibration' + myStepCounter.toString();
     document.getElementById(buttonToShow).style.display = "block";
   }
 }
 
+if (myStepCounter == 1) {
+  document.getElementById('userScoreContainer').style.display = 'none';
+}
 
-if (myStoredMatrix) {
-  myParsedMatrix = JSON.parse(myStoredMatrix);
-  numRows = JSON.parse(myStoredNumRows);
-  numColumns = JSON.parse(myStoredNumColums);
+
+if (myStoredDataHandle) {
+  myParsedMatrix = myDataHandle[myStepCounter-1][1];
+  numRows = myDataHandle[0][3];
+  numColumns = myDataHandle[0][4];
   console.log(myParsedMatrix); 
 } else {
-  console.log("No matrix data found. You need to do the GVO first. See /gvo.html"); 
+  console.log("No GVO data found. You need to do the GVO first. See /gvo.html"); 
 }
 
 //devide the result diagram, then color the sections
 const resultDiagram = document.getElementById('resultDiagram');
 resultDiagram.style.width = resultDiagramWidth + 'px';
 resultDiagram.style.height = resultDiagramHeight + 'px';
+
 function showResults(numRows, numColumns) {
   //const sectionWidth = resultDiagram.offsetWidth / numColumns; 
   //const sectionHeight = resultDiagram.offsetHeight / numRows;
 
   for (let i = 0; i < numRows; i++) {
     for (let j = 0; j < numColumns; j++) {
+      if (myParsedMatrix[i][j][0] === -1) {
+        continue;
+      }
       const section = document.createElement('div');
       section.classList.add('section');
       section.style.width = resultCircleDiameter; //sectionWidth - 1 + 'px';
@@ -97,8 +105,29 @@ function showResults(numRows, numColumns) {
     resultDiagram.appendChild(midPoint);
   }
 
+  let buttonToEnable;
+  if (myStepCounter >= 5) {
+    buttonToEnable = 'goToEndInstructions';
+  } else {
+    buttonToEnable = 'goToCalibration' + myStepCounter.toString();
+  }
+
+  const toNextCalibration = document.getElementById(buttonToEnable);
+  let userScoreRad = document.querySelectorAll("input[name='userScore']");
+  let userScore;
+
+  userScoreRad.forEach(rb => rb.addEventListener("change", function(){
+      toNextCalibration.disabled = false;
+      userScore = document.querySelector("input[name='userScore']:checked").value;
+      console.log('userScore = ' + userScore);
+      myDataHandle[myStepCounter-1][2] = parseInt(userScore);
+      console.log(myDataHandle);
+      localStorage.setItem('myDataHandle', JSON.stringify(myDataHandle));
+  }));
 
   showButton();
 }
 showResults(numRows,numColumns);
+
+
 localStorage.removeItem('myGvoMatrix');
