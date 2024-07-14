@@ -7,7 +7,7 @@ method 4: blindspot with fixed dot
 
 const myStoredStepCounter = localStorage.getItem('myStepCounter');
 let myStepCounter = JSON.parse(myStoredStepCounter);
-myStepCounter = 3; //for development
+//myStepCounter = 3; //for development
 console.log('myStepCounter = ' + myStepCounter);
 localStorage.setItem('myStepCounter', JSON.stringify(myStepCounter)); // for development
 let blindSpotX;
