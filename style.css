@@ -1,3 +1,15 @@
+#exclusionMessage {
+  display: none;
+}
+
+#demographicForm {
+  display: none;
+}
+
+#instructionContainer {
+  display: none;
+}
+
 .card {
   height: 500px;
   width: 800px;
@@ -26,11 +38,16 @@
 .lineDiv {
   height: 500px;
 }
-
 #blindSpotCalibrationStartGVO {
   display: none;
 }
 #redoBlindSpotCalibration {
+  display: none;
+}
+#repeatCalibration2 {
+  display: none;
+}
+#repeatCalibration3 {
   display: none;
 }
 
@@ -44,35 +61,60 @@
   height: 15px;
   border-radius: 50%;
   background-color: yellow;
-  position: relative;
+  position: absolute; /* Changed from relative to absolute for accurate positioning */
   top: 50%;
   left: 50%;
+  transform: translate(-50%, -50%); /* Center the fixation point */
   display: block;
 }
 
 :root {
   --blindSpotMovement: 1300px;
 }
-#blindSpotLocator {
+
+.circle {
   width: 15px;
   height: 15px;
   border-radius: 50%;
-  background-color: red;
-  position: relative;
+  position: absolute;
   top: 50%;
   left: 50%;
-  transform: translateY(-100%);
-  display: none;
+  transform: translate(-50%, -50%); /* Center the circle */
+  display: none; /* Hide initially */
 }
-.locatorStartMoving{
+
+#blindSpotLocator1 {
+  background-color: red;
+}
+
+#blindSpotLocator2 {
+  background-color: red;
+}
+
+#blindSpotLocator3 {
+  background-color: red;
+}
+
+.locatorStartMoving {
   animation-name: slideRight;
   animation-duration: 10s;
   animation-iteration-count: 1;
   animation-timing-function: linear;
 }
-@keyframes slideRight{
-  to{transform: translateX(var(--blindSpotMovement))}
+
+@keyframes slideRight {
+  to {
+      transform: translateX(var(--blindSpotMovement));
+  }
 }
+
+#buttonsContainer {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 #blindSpotLocation {
   width: 15px;
   height: 15px;

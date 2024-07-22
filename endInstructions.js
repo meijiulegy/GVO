@@ -19,3 +19,19 @@ function copyToClipboard() {
     }
     window.getSelection().removeAllRanges();
 }
+
+function downloadData() {
+    const blob = new Blob([myStoredDataHandle], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'myStoredDataHandle.json';
+    document.body.appendChild(a);
+    a.click();
+
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+document.getElementById('downloadButton').addEventListener('click', downloadData);

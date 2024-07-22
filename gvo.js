@@ -5,7 +5,6 @@ console.log('myStepCounter = ' + myStepCounter);
 myStepCounter +=1;
 console.log('myStepCounter + 1 = ' + myStepCounter);
 localStorage.setItem('myStepCounter', JSON.stringify(myStepCounter));
-//const myStoredBlindSpotX = localStorage.getItem('blindSpotX');
 const myStoredDataHandle = localStorage.getItem('myDataHandle');
 const myDataHandle = JSON.parse(myStoredDataHandle);
 let blindSpotX = myDataHandle[myStepCounter-1][0];
@@ -17,8 +16,9 @@ console.log('blindSpotX at load = ' + blindSpotX);
 const acceptedResponseDeley = 1000; //response delayed after stimulus is shown must be < stimulusInterval - stimulusIntervalVariation
 const repGvo = 1; //not yet implemented
 const stimulusDuration = 200; //duration of a stimulus, must be << stimulus interval
-const stimulusInterval = 300; //default 1500, base interval between consecutive stimuli
-const stimulusIntervalVariation = 0; //default 250, random deviation of time of stimulus from the set interval
+const stimulusInterval = 1500; //default 1500, base interval between consecutive stimuli
+const stimulusIntervalVariation = 200; //default 200, random deviation from the set interval
+const stimulusSize = 3; //goldmann size 1-5, default 3 = 0.43deg diameter, approximated at fixation point. 
 let myParsedMatrix;
 let indices = []; 
 let myRandomSeq = [];
@@ -28,8 +28,10 @@ let numRows = 4;
 let numColumns = 4;
 myDataHandle[0][3] = numRows;
 myDataHandle[0][4] = numColumns;
-const angleFromBlindSpot = 4; //angle tested around blindspot, default 6 deg.
-const angleSkipFromBlindSpot = 2.2 * angleFromBlindSpot; //grid points to skip due to close angle with blindspot
+const angleFromBlindSpotX = 3; //angle tested around blindspot
+const angleFromBlindSpotY = 4;
+const angleSkipFromBlindSpotX = 2 * angleFromBlindSpotX; //grid points to skip due to close angle with blindspot
+const angleSkipFromBlindSpotY = 2 * angleFromBlindSpotY; 
 
 let testFieldHalfWidth = 2 * blindSpotX; //test field set to 2 * blindspot ~ 30 degree
 let testFieldHalfHeight = testFieldHalfWidth* (screen.availHeight / screen.availWidth); //test field height adjusted to screen height/width ratio. cav: report screen height and width for analysis.
@@ -110,8 +112,8 @@ let userDistance = blindSpotX / getTanDeg(15);
 for (let i = 0; i < 3; i++) {
     for (let j = 0; j < 3; j++) {
         myGvoMatrix[numRows][3*i + j][0] = 0;
-        myGvoMatrix[numRows][3*i + j][1] = String(Math.round((0.5 + userDistance * getTanDeg(1.5 + (i - 1) * angleFromBlindSpot)/screen.availHeight)*100)) + "%"; //%top
-        myGvoMatrix[numRows][3*i + j][2] = String(Math.round((0.5 + myDataHandle[0][2] * userDistance * getTanDeg(15 + (j - 1) * angleFromBlindSpot)/screen.availWidth)*100)) + "%"; //%left
+        myGvoMatrix[numRows][3*i + j][1] = String(Math.round((0.5 + userDistance * getTanDeg(2 + (i - 1) * angleFromBlindSpotY)/screen.availHeight)*100)) + "%"; //%top
+        myGvoMatrix[numRows][3*i + j][2] = String(Math.round((0.5 + myDataHandle[0][2] * userDistance * getTanDeg(15 + (j - 1) * angleFromBlindSpotX)/screen.availWidth)*100)) + "%"; //%left
         if (myStepCounter != 1){ //not including in practice round
             indices.push([numRows, 3*i + j]);
         }
@@ -120,10 +122,10 @@ for (let i = 0; i < 3; i++) {
 }
 //set position of grid stimulus, push into indices. Skip stimulus close to the blindspot, while setting response counter of such stimuli to -1, as a marker for skip when generating results.
 //determine skip box
-let skipTopMargin = Math.round((0.5 + userDistance * getTanDeg(1.5 - angleSkipFromBlindSpot)/screen.availHeight)*100);
-let skipBottomMargin = Math.round((0.5 + userDistance * getTanDeg(1.5 + angleSkipFromBlindSpot)/screen.availHeight)*100);
-let skipCentralMargin = Math.round((0.5 + myDataHandle[0][2] * userDistance * getTanDeg(15 - angleSkipFromBlindSpot)/screen.availWidth)*100);
-let skipLateralMargin = Math.round((0.5 + myDataHandle[0][2] * userDistance * getTanDeg(15 + angleSkipFromBlindSpot)/screen.availWidth)*100);
+let skipTopMargin = Math.round((0.5 + userDistance * getTanDeg(2 - angleSkipFromBlindSpotY)/screen.availHeight)*100);
+let skipBottomMargin = Math.round((0.5 + userDistance * getTanDeg(2 + angleSkipFromBlindSpotY)/screen.availHeight)*100);
+let skipCentralMargin = Math.round((0.5 + myDataHandle[0][2] * userDistance * getTanDeg(15 - angleSkipFromBlindSpotX)/screen.availWidth)*100);
+let skipLateralMargin = Math.round((0.5 + myDataHandle[0][2] * userDistance * getTanDeg(15 + angleSkipFromBlindSpotX)/screen.availWidth)*100);
 let skipLeftMargin;
 let skipRightMargin;
 if (skipCentralMargin < skipLateralMargin){
@@ -141,9 +143,9 @@ for (let i = 0; i < numRows; i++) {
         //myGvoMatrix elements: [response counter, position top %, position left %, timestamp of appearance in rep 1, rep 2, ...]
         gridTop = Math.round((((1/numRows/2 + 1/numRows*i)*2*testFieldHalfHeight/screen.availHeight) + marginTop)*100)
         gridLeft = Math.round((((1/numColumns/2 + 1/numColumns*j)*2*testFieldHalfWidth/screen.availWidth) + marginLeft)*100)
-        //skipping around blindspot
+        //skipping around blindspot, response counter set to -1, marked to be skipped by result diagram
         if (myStepCounter != 1 && gridTop > skipTopMargin && gridTop < skipBottomMargin && gridLeft > skipLeftMargin && gridLeft < skipRightMargin) {
-            myGvoMatrix[i][j][0] = -1;
+            myGvoMatrix[i][j][0] = -1; 
             myGvoMatrix[i][j][1] = String(gridTop) + "%";
             myGvoMatrix[i][j][2] = String(gridLeft) + "%"; 
         //skipping center
@@ -162,10 +164,19 @@ for (let i = 0; i < numRows; i++) {
 }
 console.log(myGvoMatrix);
 
-
-
 //randomize
 myRandomSeq = shuffle(indices);
+
+function setStimulusSize(){
+    //take userDistance, multiply by 2 * tan(deg stimulus radius)
+    let stimulusDiameterDeg = 0.43 * Math.pow(2, stimulusSize - 3);
+    let stimulusDiameterPx = userDistance * getTanDeg(stimulusDiameterDeg / 2) * 2;
+    document.getElementById("fixationPoint").style.width = String(stimulusDiameterPx) + 'px';
+    document.getElementById("fixationPoint").style.height = String(stimulusDiameterPx) + 'px';
+    document.getElementById("stimulus").style.width = String(stimulusDiameterPx) + 'px';
+    document.getElementById("stimulus").style.height = String(stimulusDiameterPx) + 'px';
+}
+setStimulusSize();
 
 //function for running the gvo
 function runGvo() {

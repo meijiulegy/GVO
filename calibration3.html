@@ -8,32 +8,39 @@
 </head>
 <body>
     <H1>Calibration Method 3</H1>
-    <p>placeholder text</p><br>
-    
     <H3>Instructions:</H3>
     <p>Fixate the chosen test eye on the yellow target and cover the other eye</p>
-    <p>Upon clicking the 'Start Calibration', the red dot will start moving away from the yellow dot</p>
-    <p>With test eye fixated on the yellow target, press spacebar when red dot disappears</p>
-    <p>You may redo this step if you wish</p>
+    <p>Upon clicking the 'Start Calibration' button, a red dot will appear and start moving away from the yellow target.</p>
+    <p>With test eye fixated on the yellow target, press spacebar when the red dot disappears.</p>
+    <p>Repeat this process 3 times by pressing "Repeat" while keeping your head still.</p>
+    <p>You may redo this step if you wish by pressing the "Redo Calibration" button.</p>
     <br>
 
     <div class="blindSpotCalibrationField">
         <div class = "circle" id="fixationPoint"></div>
-        <div class = "circle" id="blindSpotLocator"></div>
+        <div class = "circle" id="blindSpotLocator1"></div>
+        <div class = "circle" id="blindSpotLocator2"></div>
+        <div class = "circle" id="blindSpotLocator3"></div>
         <div class = "circle" id="blindSpotLocation"></div>
         <audio id="beep" src="beep.mp3"></audio>
     </div>
-    <br>
 
-    <button id="startBlindSpotCalibration" onclick="startCalibration(stopCalibration)">Start Calibration</button>
-    <button id="redoBlindSpotCalibration" onclick="redoCalibration()">Redo Calibration</button>
+    <div id="buttonsContainer">
+        <p id="repeatInfo"></p>
+        <button id="startBlindSpotCalibration">Start Calibration</button>
+        <button id="repeatCalibration2">Repeat</button>
+        <button id="repeatCalibration3">Repeat</button>
+        <button id="redoBlindSpotCalibration">Redo Calibration</button>
+        <p id="errorBS1" style="color: red;"></p>
+        <p id="errorBS2" style="color: red;"></p>
 
-    <a href="gvo.html"  
-        onclick="window.open('gvo.html', 
-                         'newwindow', 
-                         'width=screen.width, height=200'); 
-              return false;"
-    ><button id="blindSpotCalibrationStartGVO">start test</button></a>
+        <a href="gvo.html"  
+            onclick="window.open('gvo.html', 
+                            'newwindow', 
+                            'width=screen.width, height=200'); 
+                return false;"
+        ><button id="blindSpotCalibrationStartGVO">start test</button></a>
+    </div>
     
     
     

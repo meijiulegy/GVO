@@ -19,10 +19,10 @@
         <div class = "card">
             <img class = "cardImg" id='bankCard' src = "card.jpg">
         </div>
-        <button class = "smaller" onclick="makeSmaller()">-</button>
-        <button class = "bigger" onclick="makeBigger()">+</button>
+        <button id = "smaller">-</button>
+        <button id = "bigger">+</button>
     </div><br>
-    
+    <p id="errorMsg" style="color: red;"></p>
 
 
     <a href="gvo.html"  
@@ -30,7 +30,7 @@
                          'newwindow', 
                          'width=screen.width, height=200'); 
               return false;"
-    ><button id="startGVO" onclick="calculateBlindSpot()">start test</button></a>
+    ><button id="startGVO" onclick="storeBlindSpotX()">start test</button></a>
     
     
     

@@ -11,9 +11,87 @@ if (myStoredDataHandle) {
 }
 */
 
-const myDataHandle = Array.from({length: 5}, () => Array.from({ length: 5}, () => []));
+const myDataHandle = Array.from({length: 5}, () => Array.from({ length: 6}, () => []));
 console.log('myStepCounter = ' + myStepCounter);
 console.log('myDataHandle = ' + myDataHandle);
+
+document.addEventListener('DOMContentLoaded', function() {
+    const questionnaireForm = document.getElementById('questionnaireContainer');
+    const submitButton = document.getElementById('questionnaireSubmit');
+    const questions = questionnaireForm.querySelectorAll('input[type="radio"]');
+    
+    function checkCompletion() {
+        const isComplete = Array.from({ length: 5 }, (_, i) => 
+            questionnaireForm.querySelector(`input[name="question${i+1}"]:checked`)
+        ).every(input => input !== null);
+        submitButton.disabled = !isComplete;
+    }
+    
+    questions.forEach(question => {
+        question.addEventListener('change', checkCompletion);
+    });
+
+    questionnaireForm.addEventListener('submit', function(event) {
+        event.preventDefault(); 
+
+        const secondChoicesPicked = Array.from({ length: 5 }, (_, i) => 
+            questionnaireForm.querySelector(`input[name="question${i+1}"]:checked`).value === '1'
+        );
+
+        if (secondChoicesPicked.some(isSecondChoice => isSecondChoice)) {
+            document.getElementById('questionnaireContainer').style.display = 'none';
+            document.getElementById('exclusionMessage').style.display = 'block';
+        } else {
+            document.getElementById('questionnaireContainer').style.display = 'none';
+            document.getElementById('demographicForm').style.display = 'block';
+        }
+
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const ageInput = document.getElementById('age');
+    const genderInputs = document.querySelectorAll('input[name="gender"]');
+    const ethnicityInputs = document.querySelectorAll('input[name="ethnicity"]');
+    const demoSubmit = document.getElementById('demoSubmit');
+    const demographicForm = document.getElementById('demographicForm');
+    const errorAge = document.getElementById('errorAge');
+    
+    function checkInputs() {
+        const age = ageInput.value;
+        const isGenderSelected = Array.from(genderInputs).some(input => input.checked);
+        const isEthnicitySelected = Array.from(ethnicityInputs).some(input => input.checked);
+
+        const isAgeValid = age && age >= 0 && age <= 120;
+        demoSubmit.disabled = !(isAgeValid && isGenderSelected && isEthnicitySelected);
+        
+        if (!isAgeValid && age !== "") {
+            errorAge.textContent = "Please enter a valid age. Enter 0 if you do not wish to share.";
+        } else {
+            errorAge.textContent = "";
+        }
+    }
+    
+    ageInput.addEventListener('input', checkInputs);
+    genderInputs.forEach(input => input.addEventListener('change', checkInputs));
+    ethnicityInputs.forEach(input => input.addEventListener('change', checkInputs));
+    
+    demographicForm.addEventListener('submit', function(event) {
+        event.preventDefault(); 
+        
+        const age = ageInput.value;
+        const gender = document.querySelector('input[name="gender"]:checked').value;
+        const ethnicity = document.querySelector('input[name="ethnicity"]:checked').value;
+        
+        myDataHandle[0][5] = [gender, age, ethnicity];
+        console.log(myDataHandle[0][5]);
+        document.getElementById('demographicForm').style.display = 'none';
+        document.getElementById('instructionContainer').style.display = 'block';
+    });
+});
+
+
+
 
 const practiceRoundButton = document.getElementById("practiceRoundButton");
 let testEyeRad = document.querySelectorAll("input[name='testEye']");

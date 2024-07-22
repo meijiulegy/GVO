@@ -11,34 +11,115 @@
     <p>placeholder text</p>
     <p>GVO currently set to 3x3 grid, with 3x3 overlay around the blindspot</p>
     <p>1 round of stimuli</p>
-    <p>100ms stimulus duration</p>
+    <p>200ms stimulus duration</p>
     <p>1500+-200ms interval</p>
-    <p>Test field set to +/- 30deg horizontal. Practice round assumes blindspot at +1/4 screen width.</p><br>
-    <H3>Instructie:</H3>
-    <p>Do not return to previous pages during the test</p>
+    <p>Test field set to +/- 30deg horizontal. Practice round assumes blindspot at +/- 1/4 screen width.</p><br>
 
-    <p>Choose below which eye you wish to test. The same eye will be used for all tests.</p>
-    <p>Then press button to begin with the practice round</p>
-    <p>During the test, cover the other eye, fixate the chosen test eye on the yellow target, press spacebar when you see a stimulus</p><br>
+    <form id="questionnaireContainer">
+        <H3>Questionnaire</H3>
+        <p>In order to aquire valid data for analysis, eyes with increased chance of visual field defects are excluded.</p>
+        <p>Please answer the following questions before proceeding with the tests.</p>
 
-    <p>Choose which eye to test:</p>
-    <input type="radio" name="testEye" id="leftEye" value="-1">
-    <label for="leftEye">Left eye</label>
-    <input type="radio" name="testEye" id="rightEye" value="1">
-    <label for="rightEye">Right eye</label>
-    <br>
-    <br>
+        <p>1. Question 1?</p>
+        <input type="radio" name="question1" id="choice1-1" value="0">
+        <label for="choice1-1">Yes</label>
+        <input type="radio" name="question1" id="choice1-2" value="1">
+        <label for="choice1-2">No</label>
 
+        <p>1. Question 2?</p>
+        <input type="radio" name="question2" id="choice2-1" value="0">
+        <label for="choice2-1">Yes</label>
+        <input type="radio" name="question2" id="choice2-2" value="1">
+        <label for="choice2-2">No</label>
 
-    <a href="gvo.html"  
-        onclick="window.open('gvo.html', 
-                         'newwindow', 
-                         'width=screen.width, height=200'); 
-              return false;"
-    ><button disabled id="practiceRoundButton" onclick="registerTestEye()">To practice round</button></a>
+        <p>1. Question 3?</p>
+        <input type="radio" name="question3" id="choice3-1" value="0">
+        <label for="choice3-1">Yes</label>
+        <input type="radio" name="question3" id="choice3-2" value="1">
+        <label for="choice3-2">No</label>
+
+        <p>1. Question 4?</p>
+        <input type="radio" name="question4" id="choice4-1" value="0">
+        <label for="choice4-1">Yes</label>
+        <input type="radio" name="question4" id="choice4-2" value="1">
+        <label for="choice4-2">No</label>
+
+        <p>1. Question 5?</p>
+        <input type="radio" name="question5" id="choice5-1" value="0">
+        <label for="choice5-1">Yes</label>
+        <input type="radio" name="question5" id="choice5-2" value="1">
+        <label for="choice5-2">No</label><br><br>
+
+        <button disabled type="submit" id="questionnaireSubmit">Submit</button>
+
+    </form><br>
+
+    <div id="exclusionMessage">
+        <H3>Thank you for your interest</H3>
+        <p>In order to aquire valid data for analysis, eyes with increased chance of visual field defects are excluded.</p>
+        <p>Based on the answers you provided, you are excluded form the study.</p>
+        <p>Thank you for your interest. If you have questions, please send an email to: y.gu@umcg.nl</p>
+    </div>
+
+    <form id="demographicForm">
+        <H3>Tell us more about yourself.</H3>
+        <p>(This information is used for demographic analysis, not for identifying specific participants.)</p>
+
+        <p>Your gender: </p>
+        <input type="radio" name="gender" id="gender1" value="male">
+        <label for="gender1">Male</label>
+        <input type="radio" name="gender" id="gender2" value="female">
+        <label for="gender2">Female</label>
+        <input type="radio" name="gender" id="gender3" value="not shared">
+        <label for="gender3">I do not wish to share.</label><br><br>
+
+        <label for="demo2-1">Your Age: </label>
+        <input type="number" name="age" id="age" min="0" max="120">
+        <p id="errorAge" style="color: red;"></p>
+
+        <p>Your ethnicity: </p>
+        <input type="radio" name="ethnicity" id="ethnicity1" value="african">
+        <label for="ethnicity1">African</label>
+        <input type="radio" name="ethnicity" id="ethnicity2" value="arab">
+        <label for="ethnicity2">Arab</label>
+        <input type="radio" name="ethnicity" id="ethnicity3" value="asian">
+        <label for="ethnicity3">Asian</label>
+        <input type="radio" name="ethnicity" id="ethnicity4" value="caucasian">
+        <label for="ethnicity4">Caucasian</label>
+        <input type="radio" name="ethnicity" id="ethnicity5" value="other">
+        <label for="ethnicity5">Other ethnicity</label>
+        <input type="radio" name="ethnicity" id="ethnicity6" value="not shared">
+        <label for="ethnicity6">I do not wish to share.</label><br><br>
+
+        <button disabled type="submit" id="demoSubmit">Submit</button>
+
+    </form><br>
+
+    <form id="instructionContainer">
+        <H3>Instructie:</H3>
+        <p>Do not return to previous pages during the test</p>
+        <p>Choose below which eye you wish to test. The same eye will be used for all tests.</p>
+        <p>Then press button to begin with the practice round</p>
+        <p>During the test, cover the other eye, fixate the chosen test eye on the yellow target, press spacebar when you see a stimulus</p><br>
+    
+        <p>Choose which eye to test:</p>
+        <input type="radio" name="testEye" id="leftEye" value="-1">
+        <label for="leftEye">Left eye</label>
+        <input type="radio" name="testEye" id="rightEye" value="1">
+        <label for="rightEye">Right eye</label>
+        <br>
+        <br>
     
     
-    
+        <a href="gvo.html"  
+            onclick="window.open('gvo.html', 
+                             'newwindow', 
+                             'width=screen.width, height=200'); 
+                  return false;"
+        ><button disabled id="practiceRoundButton" onclick="registerTestEye()">To practice round</button></a>
+
+    </form>
+
     <script src="index.js"></script>
 </body>
 </html>
