@@ -1,4 +1,4 @@
-#exclusionMessage {
+.exclusionMessage {
   display: none;
 }
 
@@ -38,21 +38,12 @@
 .lineDiv {
   height: 500px;
 }
-#blindSpotCalibrationStartGVO {
-  display: none;
-}
-#redoBlindSpotCalibration {
-  display: none;
-}
-#repeatCalibration2 {
-  display: none;
-}
-#repeatCalibration3 {
+.buttonsContainer button{
   display: none;
 }
 
 .blindSpotCalibrationField {
-  height: 300px;
+  height: 500px;
   background-color: hsl(0, 0%, 60%);
 }
 
@@ -111,6 +102,13 @@
 #buttonsContainer {
   position: absolute;
   top: 55%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#msgContainer {
+  position: absolute;
+  top: 60%;
   left: 50%;
   transform: translateX(-50%);
 }

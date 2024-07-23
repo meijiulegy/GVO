@@ -7,7 +7,7 @@ const myStoredStepCounter = localStorage.getItem('myStepCounter');
 let myStepCounter = JSON.parse(myStoredStepCounter);
 const resultCircleDiameter = "10px";
 const resultDiagramWidth = 600;
-let resultDiagramHeight = resultDiagramWidth * screen.availHeight/screen.availWidth; //change to = resultDiagramWidth for a square diagram
+let resultDiagramHeight = resultDiagramWidth * window.innerHeight/window.innerWidth; //change to = resultDiagramWidth for a square diagram
 let buttonToShow;
 
 function showButton(){
@@ -16,6 +16,31 @@ function showButton(){
   } else {
     buttonToShow = 'goToCalibration' + myStepCounter.toString();
     document.getElementById(buttonToShow).style.display = "block";
+  }
+}
+
+function adjustCaliReminder(a) {
+  const cali1 = 'resizing a card on screen, distance measured with A4 paper';
+  const cali2 = 'distance measured with a rope';
+  const cali3 = 'indicating when the red dot disappears';
+  const cali4 = 'back and forth head movement';
+
+  switch(a) {
+    case 1:
+      document.getElementById('reminder').textContent = `Please assign a score to the previous distance calibration method (${cali1}) based on ease of use:`
+      break;
+    case 2:
+      document.getElementById('reminder').textContent = `Please assign a score to the previous distance calibration method (${cali2}) based on ease of use:`
+      break;
+    case 3:
+      document.getElementById('reminder').textContent = `Please assign a score to the previous distance calibration method (${cali3}) based on ease of use:`
+      break;
+    case 4:
+      document.getElementById('reminder').textContent = `Please assign a score to the previous distance calibration method (${cali4}) based on ease of use:`
+      break;
+    default:
+      document.getElementById('reminder').textContent = `Please assign a score to the previous distance calibration method based on ease of use:`
+      break;
   }
 }
 
@@ -125,6 +150,7 @@ function showResults(numRows, numColumns) {
       localStorage.setItem('myDataHandle', JSON.stringify(myDataHandle));
   }));
 
+  adjustCaliReminder(myStepCounter-1);
   showButton();
 }
 showResults(numRows,numColumns);

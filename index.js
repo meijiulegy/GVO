@@ -1,5 +1,5 @@
 let myStepCounter = 0;
-let blindSpotX = screen.availWidth/4;
+let blindSpotX = window.innerWidth/4;
 
 /*
 const myStoredDataHandle = localStorage.getItem('myDataHandle');
@@ -34,11 +34,11 @@ document.addEventListener('DOMContentLoaded', function() {
     questionnaireForm.addEventListener('submit', function(event) {
         event.preventDefault(); 
 
-        const secondChoicesPicked = Array.from({ length: 5 }, (_, i) => 
+        const firstChoicesPicked = Array.from({ length: 5 }, (_, i) => 
             questionnaireForm.querySelector(`input[name="question${i+1}"]:checked`).value === '1'
         );
 
-        if (secondChoicesPicked.some(isSecondChoice => isSecondChoice)) {
+        if (firstChoicesPicked.some(isFirstChoice => isFirstChoice)) {
             document.getElementById('questionnaireContainer').style.display = 'none';
             document.getElementById('exclusionMessage').style.display = 'block';
         } else {
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
         demoSubmit.disabled = !(isAgeValid && isGenderSelected && isEthnicitySelected);
         
         if (!isAgeValid && age !== "") {
-            errorAge.textContent = "Please enter a valid age. Enter 0 if you do not wish to share.";
+            errorAge.textContent = "Please enter a valid age.";
         } else {
             errorAge.textContent = "";
         }
@@ -78,15 +78,20 @@ document.addEventListener('DOMContentLoaded', function() {
     
     demographicForm.addEventListener('submit', function(event) {
         event.preventDefault(); 
-        
         const age = ageInput.value;
         const gender = document.querySelector('input[name="gender"]:checked').value;
         const ethnicity = document.querySelector('input[name="ethnicity"]:checked').value;
-        
-        myDataHandle[0][5] = [gender, age, ethnicity];
-        console.log(myDataHandle[0][5]);
-        document.getElementById('demographicForm').style.display = 'none';
-        document.getElementById('instructionContainer').style.display = 'block';
+
+        if (age < 18) {
+            document.getElementById('demographicForm').style.display = 'none';
+            document.getElementById('ageExclusionMessage').style.display = 'block';
+        } else {
+            myDataHandle[0][5] = [gender, age, ethnicity];
+            console.log(myDataHandle[0][5]);
+            document.getElementById('demographicForm').style.display = 'none';
+            document.getElementById('instructionContainer').style.display = 'block';
+            
+        }
     });
 });
 

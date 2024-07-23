@@ -7,7 +7,7 @@ method 4: blindspot with fixed dot
 
 const myStoredStepCounter = localStorage.getItem('myStepCounter');
 let myStepCounter = JSON.parse(myStoredStepCounter);
-//myStepCounter = 1; //for development
+//myStepCounter = 3; //for development
 console.log('myStepCounter = ' + myStepCounter);
 localStorage.setItem('myStepCounter', JSON.stringify(myStepCounter)); // for development
 let blindSpotX;
@@ -51,7 +51,7 @@ if (myStepCounter == 1){
 
     function calculateBlindSpot(){
         blindSpotX = Math.floor(currentWidth * 297 / 86 * getTanDeg(15));
-        if (blindSpotX > screen.availWidth * 0.3){
+        if (blindSpotX > window.innerWidth * 0.3){
             document.getElementById('startGVO').disabled = true;
             document.getElementById('errorMsg').textContent = 'Error: please properly resize the img. Consider using a bigger screen.';
         }else{
@@ -88,6 +88,10 @@ if (myStepCounter == 1){
 
 } else if (myStepCounter == 3){
     document.addEventListener("DOMContentLoaded", () => {
+        console.log('window.innerWidth = ' + window.innerWidth);
+        
+        document.getElementById('startBlindSpotCalibration').style.display = 'block';
+        document.getElementById('repeatInfo').textContent = `Press button to begin.`;
         const root = document.documentElement;
         root.style.setProperty('--blindSpotMovement', myDataHandle[0][2] * window.innerWidth / 2 + "px");
         let fixationPositionX;
@@ -97,8 +101,11 @@ if (myStepCounter == 1){
     
         console.log('fixationPoint is at ' + document.getElementById('fixationPoint').getBoundingClientRect().left);
     
-        //The three measurements are separately coded due to bug which I'm unable to fix. Consider simplifying.
+        //The three measurements are separately coded due to bugs which I'm unable to fix. Consider simplifying later.
         function startCalibration1() {
+            document.getElementById('startBlindSpotCalibration').style.display = 'none';
+            document.getElementById('now1').style.display = 'block';
+            document.getElementById('repeatInfo').textContent = `Press button or press any key.`;
             document.getElementById('blindSpotLocator1').style.display = 'block';
             document.getElementById('blindSpotLocator1').classList.add('locatorStartMoving');
     
@@ -106,6 +113,7 @@ if (myStepCounter == 1){
                 stopCalibration1();
             }, 10000);
             document.addEventListener("keydown", processBlindSpotX1);
+            document.getElementById('now1').addEventListener("click", processBlindSpotX1);
         }
     
         function stopCalibration1() {
@@ -115,6 +123,7 @@ if (myStepCounter == 1){
     
         function processBlindSpotX1() {
             playAudio();
+            document.getElementById('now1').style.display = 'none';
             document.removeEventListener('keydown', processBlindSpotX1);
     
             fixationPositionX = document.getElementById('fixationPoint').getBoundingClientRect().left;
@@ -122,7 +131,6 @@ if (myStepCounter == 1){
             const currentBlindSpotX = Math.abs(Math.round(blindSpotPositionX - fixationPositionX));
             
             document.getElementById('blindSpotLocator1').style.display = 'none';
-            document.getElementById('startBlindSpotCalibration').style.display = 'none';
             document.getElementById('blindSpotLocator1').classList.remove('locatorStartMoving');
     
             arrayBS[0] = currentBlindSpotX;
@@ -131,6 +139,9 @@ if (myStepCounter == 1){
         }
     
         function startCalibration2() {
+            document.getElementById('repeatCalibration2').style.display = 'none';
+            document.getElementById('now2').style.display = 'block';
+            document.getElementById('repeatInfo').textContent = `Press button or press any key.`;
             document.getElementById('blindSpotLocator2').style.display = 'block';
             document.getElementById('blindSpotLocator2').classList.add('locatorStartMoving');
     
@@ -138,6 +149,7 @@ if (myStepCounter == 1){
                 stopCalibration2();
             }, 10000);
             document.addEventListener("keydown", processBlindSpotX2);
+            document.getElementById('now2').addEventListener("click", processBlindSpotX2);
         }
         function stopCalibration2() {
             document.getElementById('blindSpotLocator2').classList.remove('locatorStartMoving');
@@ -146,6 +158,7 @@ if (myStepCounter == 1){
     
         function processBlindSpotX2() {
             playAudio();
+            document.getElementById('now2').style.display = 'none';
             document.removeEventListener('keydown', processBlindSpotX2);
     
             fixationPositionX = document.getElementById('fixationPoint').getBoundingClientRect().left;
@@ -157,11 +170,13 @@ if (myStepCounter == 1){
     
             arrayBS[1] = currentBlindSpotX;
             document.getElementById('repeatInfo').textContent = `Repeat 1 more time`;
-            document.getElementById('repeatCalibration2').style.display = 'none';
             document.getElementById('repeatCalibration3').style.display = 'block';
         }
     
         function startCalibration3() {
+            document.getElementById('repeatCalibration3').style.display = 'none';
+            document.getElementById('now3').style.display = 'block';
+            document.getElementById('repeatInfo').textContent = `Press button or press any key.`;
             document.getElementById('blindSpotLocator3').style.display = 'block';
             document.getElementById('blindSpotLocator3').classList.add('locatorStartMoving');
     
@@ -169,6 +184,7 @@ if (myStepCounter == 1){
                 stopCalibration3();
             }, 10000);
             document.addEventListener("keydown", processBlindSpotX3);
+            document.getElementById('now3').addEventListener("click", processBlindSpotX3);
         }
     
         function stopCalibration3() {
@@ -178,6 +194,7 @@ if (myStepCounter == 1){
     
         function processBlindSpotX3() {
             playAudio();
+            document.getElementById('now3').style.display = 'none';
             document.removeEventListener('keydown', processBlindSpotX3);
     
             fixationPositionX = document.getElementById('fixationPoint').getBoundingClientRect().left;
@@ -194,11 +211,40 @@ if (myStepCounter == 1){
             document.getElementById('repeatInfo').textContent = ``;
             document.getElementById('repeatCalibration3').style.display = 'none';
 
+            let mySortedArr = arrayBS;
+            mySortedArr.sort(function(a, b) {
+                return a-b;
+            });
+            console.log(mySortedArr);
+
+            if (mySortedArr[0] > window.innerWidth * 0.4) {
+                //mark as failed cali, use width/4
+                myDataHandle[3][4]='failed calibration. smallest measured blindspot > 0.4 * innerWidth or no response. Using 0.25 * innerWidth as blindspot';
+                const blindSpotX = window.innerWidth * 0.25;
+                myDataHandle[3][0] = blindSpotX;
+            } else if (mySortedArr[1] > window.innerWidth * 0.4 && mySortedArr[0] < window.innerWidth * 0.4) {
+                myDataHandle[3][4] = 'smallest value used for blindspot; median value > 0.4 * innerWidth';
+                //use smallest value
+                const blindSpotX = mySortedArr[0];
+                myDataHandle[3][0] = blindSpotX;
+            } else {
+                myDataHandle[3][4] = 'median value used for blindspot';
+                //use median
+                const blindSpotX = mySortedArr[1];
+                myDataHandle[3][0] = blindSpotX;
+            }
+            localStorage.setItem('myDataHandle', JSON.stringify(myDataHandle));
+            console.log(myDataHandle[3][4]);
+            console.log('registered blindspot = ' + myDataHandle[3][0]);
+            document.getElementById('blindSpotCalibrationStartGVO').style.display = 'block';
+
+            //code for implementing statistical tests for measurements outliers
+            /* 
             if(sDtest(arrayBS, 2)) { //call SD test, 2nd parameter is sd threshold
             //if(dixonsQTest(arrayBS)) { //call dixons Q test
                 const blindSpotX = Math.round(arrayBS.reduce((a, b) => a + b, 0) / arrayBS.length);
                 myDataHandle[3][0] = blindSpotX;
-                if(blindSpotX > screen.availWidth * 0.3){
+                if(blindSpotX > window.innerWidth * 0.3){
                     document.getElementById('redoBlindSpotCalibration').style.display = 'block';
                     document.getElementById('errorBS1').textContent = 'Please move your head closer to the screen and redo calibration by pressing the button above.';
                 }else{
@@ -212,6 +258,8 @@ if (myStepCounter == 1){
                 document.getElementById('errorBS1').textContent = 'Low consistency among the 3 measurements. Please redo the calibration by pressing the button above.';
                 document.getElementById('errorBS2').textContent = 'Make sure that you are keeping your head still in the entire process.'
             }
+            */
+
         }
     
         function dixonsQTest(a) {

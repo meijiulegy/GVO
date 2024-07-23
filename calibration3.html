@@ -9,12 +9,16 @@
 <body>
     <H1>Calibration Method 3</H1>
     <H3>Instructions:</H3>
-    <p>Fixate the chosen test eye on the yellow target and cover the other eye</p>
-    <p>Upon clicking the 'Start Calibration' button, a red dot will appear and start moving away from the yellow target.</p>
-    <p>With test eye fixated on the yellow target, press spacebar when the red dot disappears.</p>
-    <p>Repeat this process 3 times by pressing "Repeat" while keeping your head still.</p>
-    <p>You may redo this step if you wish by pressing the "Redo Calibration" button.</p>
-    <br>
+
+    <ul>
+        <li>You may take a break before proceeding.</li>
+        <li>Fixate the chosen test eye on the yellow target below and cover the other eye.</li>
+        <li>Upon clicking the 'Start Calibration' button, a red dot will appear and start moving away from the yellow target.</li>
+        <li>With test eye fixated on the yellow target, <strong>press spacebar or click on the button when the red dot disappears.</strong></li>
+        <li>Repeat this process <strong>3 times</strong> by pressing "Repeat" while keeping your head still.</li>
+        <li>After the following visual field test, you will be asked to assign a score to this distance calibraion method based on ease of use.</li>
+        <li>After 3 repetitions, press 'start test' button to start the test. </li>
+    </ul><br>
 
     <div class="blindSpotCalibrationField">
         <div class = "circle" id="fixationPoint"></div>
@@ -25,14 +29,14 @@
         <audio id="beep" src="beep.mp3"></audio>
     </div>
 
-    <div id="buttonsContainer">
-        <p id="repeatInfo"></p>
+    <div id="buttonsContainer" class="buttonsContainer">
         <button id="startBlindSpotCalibration">Start Calibration</button>
         <button id="repeatCalibration2">Repeat</button>
         <button id="repeatCalibration3">Repeat</button>
+        <button id="now1">I can't see it anymore</button>
+        <button id="now2">I can't see it anymore</button>
+        <button id="now3">I can't see it anymore</button>
         <button id="redoBlindSpotCalibration">Redo Calibration</button>
-        <p id="errorBS1" style="color: red;"></p>
-        <p id="errorBS2" style="color: red;"></p>
 
         <a href="gvo.html"  
             onclick="window.open('gvo.html', 
@@ -40,6 +44,12 @@
                             'width=screen.width, height=200'); 
                 return false;"
         ><button id="blindSpotCalibrationStartGVO">start test</button></a>
+    </div>
+
+    <div id="msgContainer">
+        <p id="repeatInfo"></p>
+        <p id="errorBS1" style="color: red;"></p>
+        <p id="errorBS2" style="color: red;"></p>
     </div>
     
     

@@ -1,4 +1,3 @@
-
 const myStoredStepCounter = localStorage.getItem('myStepCounter');
 let myStepCounter = JSON.parse(myStoredStepCounter);
 console.log('myStepCounter = ' + myStepCounter);
@@ -243,7 +242,3 @@ function generateResults(){
         }
     }
 }
-
-
-
-    
