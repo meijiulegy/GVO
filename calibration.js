@@ -7,69 +7,117 @@ method 4: blindspot with fixed dot
 
 const myStoredStepCounter = localStorage.getItem('myStepCounter');
 let myStepCounter = JSON.parse(myStoredStepCounter);
-//myStepCounter = 3; //for development
+//myStepCounter = 4; //for development
 console.log('myStepCounter = ' + myStepCounter);
 localStorage.setItem('myStepCounter', JSON.stringify(myStepCounter)); // for development
 let blindSpotX;
 const myStoredDataHandle = localStorage.getItem('myDataHandle');
 const myDataHandle = JSON.parse(myStoredDataHandle);
 
+function openNewWindow() {  
+    window.open(
+        'gvo.html',
+        'newwindow',
+        `width=${screen.availWidth},height=${screen.availHeight},scrollbars=no,toolbar=no,location=no,directories=no,status=no,menubar=no`
+    );
+}
+
 if (myStepCounter == 1){
     /*
     standard ID card = 86*54mm, A4 paper = 297*210mm, 
-    tan(15 deg) = 0.268,  297mm*tan(15deg) = 79.6mm, 
+    tan(15 deg) = 0.268,  297mm*tan(15deg) = 79.6mm, 300mm*tan(15deg) = 80.38mm
     let user resize a rectangle, length = x pixel, calibration: (x/86) pixel/mm
     at distance = 297mm
     +15 deg blindspot horizontal position: + (79.6/86)*x pixel
     */
-    const myCardImg = document.getElementById('bankCard');
-    const smallerButton = document.getElementById('smaller');
-    const biggerButton = document.getElementById('bigger');
+    document.addEventListener('DOMContentLoaded', () => {
+            
+        const myCardImg = document.getElementById('bankCard');
+        const smallerButton = document.getElementById('smaller');
+        const biggerButton = document.getElementById('bigger');
+        const startGVOButton = document.getElementById("startGVO");
 
-    let currentWidth = myCardImg.width;
-    console.log(currentWidth);
+        let currentWidth = myCardImg.width;
+        console.log(currentWidth);
 
-    smallerButton.addEventListener("click", () => {
-        makeSmaller();
-        calculateBlindSpot();
-    });
-    biggerButton.addEventListener("click", () => {
-        makeBigger();
-        calculateBlindSpot();
-    });
+        smallerButton.addEventListener("click", () => {
+            makeSmaller();
+            calculateBlindSpot();
+        });
+        biggerButton.addEventListener("click", () => {
+            makeBigger();
+            calculateBlindSpot();
+        });
 
-    function makeSmaller(){
-        currentWidth -= 10;
-        myCardImg.style.width = currentWidth + 'px';
-        console.log('card width = ' + currentWidth);
-    }
-    function makeBigger(){
-        currentWidth += 10;
-        myCardImg.style.width = currentWidth + 'px';
-        console.log('card width = ' + currentWidth);
-    }
-
-    function calculateBlindSpot(){
-        blindSpotX = Math.floor(currentWidth * 297 / 86 * getTanDeg(15));
-        if (blindSpotX > window.innerWidth * 0.3){
-            document.getElementById('startGVO').disabled = true;
-            document.getElementById('errorMsg').textContent = 'Error: please properly resize the img. Consider using a bigger screen.';
-        }else{
-            document.getElementById('startGVO').disabled = false;
-            document.getElementById('errorMsg').textContent = '';
+        function makeSmaller(){
+            currentWidth -= 10;
+            myCardImg.style.width = currentWidth + 'px';
+            console.log('card width = ' + currentWidth);
         }
-    }
+        function makeBigger(){
+            currentWidth += 10;
+            myCardImg.style.width = currentWidth + 'px';
+            console.log('card width = ' + currentWidth);
+        }
 
-    function storeBlindSpotX(){
-        blindSpotX = Math.floor(currentWidth * 297 / 86 * getTanDeg(15));
-        myDataHandle[1][0] = blindSpotX;
-        localStorage.setItem('myDataHandle', JSON.stringify(myDataHandle));
-    }
+        function storeBlindSpotX(){
+            blindSpotX = Math.floor(currentWidth * 300 / 86 * getTanDeg(15));
+            myDataHandle[1][0] = blindSpotX;
+            localStorage.setItem('myDataHandle', JSON.stringify(myDataHandle));
+        }
 
-    function getTanDeg(deg) {
-        const rad = (deg * Math.PI) / 180;
-        return Math.tan(rad);
-    }
+        function getTanDeg(deg) {
+            const rad = (deg * Math.PI) / 180;
+            return Math.tan(rad);
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === '-') {
+                makeSmaller();
+                calculateBlindSpot();
+            } else if (event.key === '+' || event.key === '=') {
+                makeBigger();
+                calculateBlindSpot();
+            }
+        });
+
+        function calculateBlindSpot(){
+            blindSpotX = Math.floor(currentWidth * 300 / 86 * getTanDeg(15));
+            if (blindSpotX > window.innerWidth * 0.3){
+                document.addEventListener('keydown', disableSpacebar)
+                document.removeEventListener('keydown', spacebarPressed);
+                document.getElementById('startGVO').disabled = true;
+                document.getElementById('errorMsg').textContent = 'Error: please properly resize the img. Consider using a bigger screen.';
+            
+            }else{
+                document.addEventListener('keydown', spacebarPressed);
+                document.getElementById('startGVO').disabled = false;
+                document.getElementById('errorMsg').textContent = '';
+            }
+        }
+
+        function spacebarPressed(event) {
+            event.preventDefault();
+            if (event.code === 'Space' || event.key === ' ') {
+                console.log('spacebar pressed');
+                startButtonClicked();
+            }
+        }
+
+        function disableSpacebar(event) {
+            event.preventDefault();
+        }
+
+        function startButtonClicked(event) {
+            //event.preventDefault();
+            storeBlindSpotX();
+            openNewWindow();
+        }
+
+        startGVOButton.addEventListener('click', startButtonClicked);
+    });
+
+
 
 
 } else if (myStepCounter == 2){
@@ -78,13 +126,31 @@ if (myStepCounter == 1){
     blindspot horizontal position: + 0.268*k pixel
     blindspot vertical position: - 0.0262*k pixel
     */
-    document.getElementById('lineDiv').style.height = 0.2*window.innerWidth + 'px'
-    document.getElementById('doubleArrow').style.width = 0.75*window.innerWidth + 'px';
-    blindSpotX = Math.floor(0.75*0.268*window.innerWidth);
-    myDataHandle[2][0] = blindSpotX;
-    localStorage.setItem('myDataHandle', JSON.stringify(myDataHandle));
-    console.log(myDataHandle);
-    console.log('blindSpotX = ' + blindSpotX);
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const startGVOButton = document.getElementById("startGVO");
+
+        document.getElementById('lineDiv').style.height = 0.2*window.innerWidth + 'px'
+        document.getElementById('doubleArrow').style.width = 0.75*window.innerWidth + 'px';
+        blindSpotX = Math.floor(0.75*0.268*window.innerWidth);
+        myDataHandle[2][0] = blindSpotX;
+        localStorage.setItem('myDataHandle', JSON.stringify(myDataHandle));
+        console.log(myDataHandle);
+        console.log('blindSpotX = ' + blindSpotX);
+        
+        function buttonClicked(event) {
+            //event.preventDefault();
+            openNewWindow();
+        }
+    
+        startGVOButton.addEventListener('click', buttonClicked);
+        document.addEventListener('keydown', function(event) {
+            if (event.code === 'Space' || event.key === ' ') {
+                console.log('spacebar pressed');
+                event.preventDefault();
+                buttonClicked();
+            }
+        });
+    });
 
 } else if (myStepCounter == 3){
     document.addEventListener("DOMContentLoaded", () => {
@@ -92,6 +158,7 @@ if (myStepCounter == 1){
         
         document.getElementById('startBlindSpotCalibration').style.display = 'block';
         document.getElementById('repeatInfo').textContent = `Press button to begin.`;
+        const startGVOButton = document.getElementById('blindSpotCalibrationStartGVO');
         const root = document.documentElement;
         root.style.setProperty('--blindSpotMovement', myDataHandle[0][2] * window.innerWidth / 2 + "px");
         let fixationPositionX;
@@ -238,6 +305,20 @@ if (myStepCounter == 1){
             console.log('registered blindspot = ' + myDataHandle[3][0]);
             document.getElementById('blindSpotCalibrationStartGVO').style.display = 'block';
 
+            function buttonClicked(event) {
+                //event.preventDefault();
+                openNewWindow();
+            }
+    
+            startGVOButton.addEventListener('click', buttonClicked);
+            document.addEventListener('keydown', function(event) {
+                if (event.code === 'Space' || event.key === ' ') {
+                    console.log('spacebar pressed');
+                    event.preventDefault();
+                    buttonClicked();
+                }
+            });
+
             //code for implementing statistical tests for measurements outliers
             /* 
             if(sDtest(arrayBS, 2)) { //call SD test, 2nd parameter is sd threshold
@@ -305,7 +386,7 @@ if (myStepCounter == 1){
         function playAudio() {
             beep.play();
         }
-    
+
         document.getElementById('startBlindSpotCalibration').addEventListener('click', startCalibration1);
         document.getElementById('repeatCalibration2').addEventListener('click', startCalibration2);
         document.getElementById('repeatCalibration3').addEventListener('click', startCalibration3);
@@ -313,19 +394,40 @@ if (myStepCounter == 1){
     });
 
 } else if (myStepCounter == 4){
-    let fixationPositionX;
-    let blindSpotPositionX;
-    let blindSpotXPercent;
-    blindSpotXPercent = 50 + myDataHandle[0][2] * 25
-    document.getElementById('blindSpotLocator1').style.left = blindSpotXPercent.toString() + '%';
-    document.getElementById('blindSpotLocator1').style.display = 'block';
-    fixationPositionX = document.getElementById('fixationPoint').getBoundingClientRect().left;
-    blindSpotPositionX = document.getElementById('blindSpotLocator1').getBoundingClientRect().left;
-    blindSpotX = Math.abs(Math.floor(blindSpotPositionX - fixationPositionX));
-    myDataHandle[4][0] = blindSpotX;
-    localStorage.setItem('myDataHandle', JSON.stringify(myDataHandle));
-    console.log(myDataHandle);
-    console.log('blindSpotX = ' + blindSpotX);
+    document.addEventListener('DOMContentLoaded', () => {
+        const startGVOButton = document.getElementById('blindSpotCalibrationStartGVO');
+        let fixationPositionX;
+        let blindSpotPositionX;
+        let blindSpotXPercent;
+        blindSpotXPercent = 50 + myDataHandle[0][2] * 25
+        document.getElementById('blindSpotLocator1').style.left = blindSpotXPercent.toString() + '%';
+        document.getElementById('blindSpotLocator1').style.display = 'block';
+        fixationPositionX = document.getElementById('fixationPoint').getBoundingClientRect().left;
+        blindSpotPositionX = document.getElementById('blindSpotLocator1').getBoundingClientRect().left;
+        blindSpotX = Math.abs(Math.floor(blindSpotPositionX - fixationPositionX));
+        myDataHandle[4][0] = blindSpotX;
+        localStorage.setItem('myDataHandle', JSON.stringify(myDataHandle));
+        console.log(myDataHandle);
+        console.log('blindSpotX = ' + blindSpotX);
+
+        function buttonClicked(event) {
+            //event.preventDefault();
+            openNewWindow();
+        }
+    
+        startGVOButton.addEventListener('click', buttonClicked);
+        document.addEventListener('keydown', function(event) {
+            if (event.code === 'Space' || event.key === ' ') {
+                console.log('spacebar pressed');
+                event.preventDefault();
+                buttonClicked();
+            }
+        });
+    });
+
+
+    
+
 
 } else {
     console.log("Error. Please start over at /index.html. Do not return to previous page.")

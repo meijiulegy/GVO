@@ -12,6 +12,7 @@ let blindSpotX = myDataHandle[myStepCounter-1][0];
 //myStepCounter = 3; //for development
 console.log('blindSpotX at load = ' + blindSpotX);
 
+const gvoStartDeley = 2000; //delay before 1st stimulus
 const acceptedResponseDeley = 1000; //response delayed after stimulus is shown must be < stimulusInterval - stimulusIntervalVariation
 const repGvo = 1; //not yet implemented
 const stimulusDuration = 200; //duration of a stimulus, must be << stimulus interval
@@ -89,10 +90,12 @@ function setPosition(top, left) {
 }
 
 //set window to be maximized
+/*
 window.onload = function() {
     window.moveTo(0, 0);
     window.resizeTo(screen.availWidth, screen.availHeight);
 };
+*/
 
 //generate an array myRandomSeq containing random sequence of indices of myGvoMatrix, skipping center index
 indices = [];
@@ -187,6 +190,7 @@ function runGvo() {
             //at the end of run: show results button, generate results, local storage
             setTimeout(function(){
                 document.removeEventListener("keydown", keyDownEvent);
+                document.removeEventListener("click", keyDownEvent);
                 document.getElementById('showResults').style.display = 'block';
                 //setPosition(myGvoMatrix[numRows][4][1],myGvoMatrix[numRows][4][2]); //for development, show blindspot at the end
                 //document.getElementById('stimulus').style.display = 'block';
@@ -209,10 +213,18 @@ function runGvo() {
         }
     }      
 }
-runGvo();
+
+function delayedRunGvo() {
+    setTimeout(() => {
+        runGvo();
+    }, gvoStartDeley);
+}
+
+delayedRunGvo();
     
 //log timestamp of all key presses in an array
 document.addEventListener("keydown", keyDownEvent);
+document.addEventListener("click", keyDownEvent);
 function keyDownEvent(){
     playAudio();
     keyPressLog.push(Date.now());

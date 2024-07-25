@@ -1,5 +1,5 @@
 let myStepCounter = 0;
-let blindSpotX = window.innerWidth/4;
+let blindSpotX = screen.availWidth/4;
 
 /*
 const myStoredDataHandle = localStorage.getItem('myDataHandle');
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const questions = questionnaireForm.querySelectorAll('input[type="radio"]');
     
     function checkCompletion() {
-        const isComplete = Array.from({ length: 5 }, (_, i) => 
+        const isComplete = Array.from({ length: 3 }, (_, i) => 
             questionnaireForm.querySelector(`input[name="question${i+1}"]:checked`)
         ).every(input => input !== null);
         submitButton.disabled = !isComplete;
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
     questionnaireForm.addEventListener('submit', function(event) {
         event.preventDefault(); 
 
-        const firstChoicesPicked = Array.from({ length: 5 }, (_, i) => 
+        const firstChoicesPicked = Array.from({ length: 3 }, (_, i) => 
             questionnaireForm.querySelector(`input[name="question${i+1}"]:checked`).value === '1'
         );
 
@@ -95,24 +95,47 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// Add event listener to the button when the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', (event) => {
+    const practiceRoundButton = document.getElementById("practiceRoundButton");
+    let testEyeRad = document.querySelectorAll("input[name='testEye']");
+    let testEye;
 
+    function openNewWindow() {  
+        window.open(
+            'gvo.html',
+            'newwindow',
+            `width=${screen.availWidth},height=${screen.availHeight},scrollbars=no,toolbar=no,location=no,directories=no,status=no,menubar=no`
+        );
+    }
+    
+    function buttonClicked(event) {
+        //event.preventDefault();
+        registerTestEye();
+        openNewWindow();
+    }
 
+    testEyeRad.forEach(rb => rb.addEventListener("change", function(){
+        document.addEventListener('keydown', function(event) {
+            if (event.code === 'Space' || event.key === ' ') {
+                console.log('spacebar pressed');
+                event.preventDefault();
+                buttonClicked();
+            }
+        });
+        practiceRoundButton.disabled = false;
+        testEye = document.querySelector("input[name='testEye']:checked").value;
+        console.log('testEye = ' + testEye);
+    }));
 
-const practiceRoundButton = document.getElementById("practiceRoundButton");
-let testEyeRad = document.querySelectorAll("input[name='testEye']");
-let testEye;
+    function registerTestEye(){
+        myDataHandle[0][0] = blindSpotX;
+        myDataHandle[0][2] = parseInt(testEye);
+        console.log(myDataHandle);
+        localStorage.setItem('myStepCounter', JSON.stringify(myStepCounter));
+        localStorage.setItem('blindSpotX', JSON.stringify(blindSpotX));
+        localStorage.setItem('myDataHandle', JSON.stringify(myDataHandle));
+    }
 
-testEyeRad.forEach(rb => rb.addEventListener("change", function(){
-    practiceRoundButton.disabled = false;
-    testEye = document.querySelector("input[name='testEye']:checked").value;
-    console.log('testEye = ' + testEye);
-}));
-
-function registerTestEye(){
-    myDataHandle[0][0] = blindSpotX;
-    myDataHandle[0][2] = parseInt(testEye);
-    console.log(myDataHandle);
-    localStorage.setItem('myStepCounter', JSON.stringify(myStepCounter));
-    localStorage.setItem('blindSpotX', JSON.stringify(blindSpotX));
-    localStorage.setItem('myDataHandle', JSON.stringify(myDataHandle));
-}
+    practiceRoundButton.addEventListener('click', buttonClicked);
+});

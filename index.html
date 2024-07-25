@@ -27,33 +27,39 @@
         <input type="radio" name="question1" id="choice1-2" value="0">
         <label for="choice1-2">No</label>
 
-        <p>2. Have you been in contact with an ophthalmologist before?</p>
+        <p>2. Do you have a first-degree relative with the eye disease glaucoma, or have you ever had an elevated eye pressure measured by an optician?</p>
         <input type="radio" name="question2" id="choice2-1" value="1">
         <label for="choice2-1">Yes</label>
         <input type="radio" name="question2" id="choice2-2" value="0">
         <label for="choice2-2">No</label>
 
-        <p>3. Do you have a first-degree relative with the eye disease glaucoma, or have you ever had an elevated eye pressure measured by an optician?</p>
+        <p>3. Are you currently under the care of a neurologist?</p>
         <input type="radio" name="question3" id="choice3-1" value="1">
         <label for="choice3-1">Yes</label>
         <input type="radio" name="question3" id="choice3-2" value="0">
-        <label for="choice3-2">No</label>
+        <label for="choice3-2">No</label><br><br>
+<!--
+        1. Are you currently under the care of an ophthalmologist?
+        2. Have you been in contact with an ophthalmologist before?
+        3. Do you have a first-degree relative with the eye disease glaucoma, or have you ever had an elevated eye pressure measured by an optician?
+        4. Are you currently under the care of a neurologist?
+        5. Have you been in contact with a neurologist before?
 
         <p>4. Are you currently under the care of a neurologist?</p>
         <input type="radio" name="question4" id="choice4-1" value="1">
         <label for="choice4-1">Yes</label>
         <input type="radio" name="question4" id="choice4-2" value="0">
         <label for="choice4-2">No</label>
-
+        
         <p>5. Have you been in contact with a neurologist before?</p>
         <input type="radio" name="question5" id="choice5-1" value="1">
         <label for="choice5-1">Yes</label>
         <input type="radio" name="question5" id="choice5-2" value="0">
         <label for="choice5-2">No</label><br><br>
-
+-->
         <button disabled type="submit" id="questionnaireSubmit">Submit</button>
 
-    </form><br>
+    </form>
 
     <div class="exclusionMessage" id="exclusionMessage">
         <H3>Thank you for your interest</H3>
@@ -72,8 +78,8 @@
 
 
     <form id="demographicForm">
-        <H3>Tell us more about yourself.</H3>
-        <p>(This information is used for demographic analysis, not for identifying specific participants.)</p>
+        <H3>Tell us more about yourself</H3>
+        <p>(This information is used for demographic analysis, not for identifying specific participants)</p>
 
         <p>Your gender: </p>
         <input type="radio" name="gender" id="gender1" value="male">
@@ -81,7 +87,7 @@
         <input type="radio" name="gender" id="gender2" value="female">
         <label for="gender2">Female</label>
         <input type="radio" name="gender" id="gender3" value="not shared">
-        <label for="gender3">Other. / I do not wish to share.</label><br><br>
+        <label for="gender3">Other / I do not wish to share</label><br><br>
 
         <label for="demo2-1">Your Age: </label>
         <input type="number" name="age" id="age" min="0" max="120">
@@ -99,11 +105,11 @@
         <input type="radio" name="ethnicity" id="ethnicity5" value="other">
         <label for="ethnicity5">Other ethnicities</label>
         <input type="radio" name="ethnicity" id="ethnicity6" value="not shared">
-        <label for="ethnicity6">I do not wish to share.</label><br><br>
+        <label for="ethnicity6">I do not wish to share</label><br><br>
 
         <button disabled type="submit" id="demoSubmit">Submit</button>
 
-    </form><br>
+    </form>
 
     <form id="instructionContainer">
         <H3>Instructions:</H3>
@@ -118,14 +124,17 @@
             <li>Dim the lighting in the environment.</li>
             <li>Put on your corrective lenses or reading glasses.</li>
             <li>Keep your head still.</li>
-            <li>Cover the eye that is not being tested, fixate the other eye on the yellow target at the center of the screen at all times.</li>
-            <li>Press spacebar when you see a stimulus.</li>
+            <li>Cover the eye that is not being tested (do not simply "close" the eye, see figure below), fixate the other eye on the yellow target at the center of the screen at all times.</li>
+            <div>
+                <img src = "coverEye.png">
+            </div>
+            <li>When you see a stimulus, press spacebar or click anywhere on the web page with your mouse.</li>
         </ul>
-        <p>Results will be displayed after each visual field test.</p>
+        <p>A 'Show results' button will be displayed after each visual field test. Click on this button to see results and to proceed to next step. </p>
         <p>After the later rounds of test, you will also be asked to assign a score to the distance calibraion method based on ease of use.</p><br>
 
         <p>Choose below which eye you wish to test. The same eye will be tested for all parts of this study.</p>
-        <p>Then press the button below to begin the practice round</p>
+        <p>Then press spacebar or the button below to begin the practice round. The first stimulus will appear after a short delay.</p>
 
         <p>Choose which eye to test:</p>
         <input type="radio" name="testEye" id="leftEye" value="-1">
@@ -135,15 +144,14 @@
         <br>
         <br>
     
-    
-        <a href="gvo.html"  
-            onclick="window.open('gvo.html', 
-                             'newwindow', 
-                             'width=screen.width, height=200'); 
-                  return false;"
-        ><button disabled id="practiceRoundButton" onclick="registerTestEye()">To practice round</button></a>
-
+        <button disabled id="practiceRoundButton">To practice round</button>
     </form>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
 
     <script src="index.js"></script>
 </body>
