@@ -34,16 +34,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const email = "y.gu@umcg.nl";
     const subject = "My online visual field test results.";
-    const body = `Hello:
+    const body1 = `Hello:
     
-    (Please stay anonymous.)
-    My test results (no need to paste again or attach the file if data is shown): 
-
-    ${myStoredDataHandle}`;
+Please paste your data below.
+`;
+    const body2 = `Hello:
+    
+Please attach your data file to this email.
+`;
 
     document.getElementById('dataField').value = myStoredDataHandle;
-    emailLink1.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    emailLink2.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    emailLink1.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body1)}`;
+    emailLink2.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body2)}`;
     document.getElementById('copyData').addEventListener('click', copyToClipboard);
     document.getElementById('downloadButton').addEventListener('click', downloadData);
 
