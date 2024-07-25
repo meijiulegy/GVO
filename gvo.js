@@ -9,8 +9,8 @@ const myDataHandle = JSON.parse(myStoredDataHandle);
 let blindSpotX = myDataHandle[myStepCounter-1][0];
 //blindSpotX = 400; //for development
 //myDataHandle[0][2] = -1;//for development
-//myStepCounter = 3; //for development
-console.log('blindSpotX at load = ' + blindSpotX);
+//myStepCounter = 3; //for development 
+console.log('blindSpotX at load = ' + blindSpotX); 
 
 const gvoStartDeley = 2000; //delay before 1st stimulus
 const acceptedResponseDeley = 1000; //response delayed after stimulus is shown must be < stimulusInterval - stimulusIntervalVariation
