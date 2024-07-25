@@ -12,11 +12,11 @@
     <H3>Instructions:</H3>
     <ul>
         <li>You may take a break before proceeding.</li>
-        <li>Press - or + to resize the card below to match the size of a standard ID/bank card.</li>
-        <li>Place your eyes at <strong>29.7cm</strong> from screen (length of the long side of an A4 paper) and hold still during the following test.</li>
-        <li>After the following visual field test, you will be asked to assign a score to this distance calibraion method based on ease of use.</li>
-        <li>When ready, cover the eye that is not being tested, and press button below to start the test. </li>
-    </ul><br>
+        <li>Press - or +  button to resize the card below to match the size of a standard ID/bank card.</li>
+        <li>Place your eyes at <strong>30 cm</strong> from screen (length of the long side of an A4 paper) and hold still during the following test.</li>
+        <li>After the following visual field test, you will be asked to assign a score to this distance calibration method based on ease of use.</li>
+        <li>When ready, cover the eye that is not being tested, and press spacebar or the button below to start the test.</li>
+    </ul>
 
     <div class = "cardResizer">
         <div class = "card">
@@ -27,15 +27,7 @@
     </div><br>
     <p id="errorMsg" style="color: red;"></p>
 
-
-    <a href="gvo.html"  
-        onclick="window.open('gvo.html', 
-                         'newwindow', 
-                         'width=screen.width, height=200'); 
-              return false;"
-    ><button id="startGVO" onclick="storeBlindSpotX()">start test</button></a>
-    
-    
+    <button id="startGVO">start test</button>
     
     <script src="calibration.js"></script>
 </body>
