@@ -7,7 +7,7 @@ method 4: blindspot with fixed dot
 
 const myStoredStepCounter = localStorage.getItem('myStepCounter');
 let myStepCounter = JSON.parse(myStoredStepCounter);
-//myStepCounter = 4; //for development
+//myStepCounter = 3; //for development
 console.log('myStepCounter = ' + myStepCounter);
 localStorage.setItem('myStepCounter', JSON.stringify(myStepCounter)); // for development
 let blindSpotX;
@@ -114,7 +114,9 @@ if (myStepCounter == 1){
             openNewWindow();
         }
 
+        startGVOButton.style.display = 'none';
         startGVOButton.addEventListener('click', startButtonClicked);
+        document.addEventListener('keydown', spacebarPressed);
     });
 
 
@@ -141,7 +143,8 @@ if (myStepCounter == 1){
             //event.preventDefault();
             openNewWindow();
         }
-    
+        
+        startGVOButton.style.display = 'none';
         startGVOButton.addEventListener('click', buttonClicked);
         document.addEventListener('keydown', function(event) {
             if (event.code === 'Space' || event.key === ' ') {
@@ -154,8 +157,11 @@ if (myStepCounter == 1){
 
 } else if (myStepCounter == 3){
     document.addEventListener("DOMContentLoaded", () => {
+        if (myDataHandle[3][5] != 1) {
+            myDataHandle[3][3] = [];
+        }
         console.log('window.innerWidth = ' + window.innerWidth);
-        
+        console.log(myDataHandle);
         document.getElementById('startBlindSpotCalibration').style.display = 'block';
         document.getElementById('repeatInfo').textContent = `Press button to begin.`;
         const startGVOButton = document.getElementById('blindSpotCalibrationStartGVO');
@@ -172,14 +178,14 @@ if (myStepCounter == 1){
         function startCalibration1() {
             document.getElementById('startBlindSpotCalibration').style.display = 'none';
             document.getElementById('now1').style.display = 'block';
-            document.getElementById('repeatInfo').textContent = `Press button or press any key.`;
+            document.getElementById('repeatInfo').textContent = `Click on the button above when the red circle disappears.`;
             document.getElementById('blindSpotLocator1').style.display = 'block';
             document.getElementById('blindSpotLocator1').classList.add('locatorStartMoving');
     
             setTimeout(() => {
                 stopCalibration1();
             }, 10000);
-            document.addEventListener("keydown", processBlindSpotX1);
+            //document.addEventListener("keydown", processBlindSpotX1);
             document.getElementById('now1').addEventListener("click", processBlindSpotX1);
         }
     
@@ -208,14 +214,14 @@ if (myStepCounter == 1){
         function startCalibration2() {
             document.getElementById('repeatCalibration2').style.display = 'none';
             document.getElementById('now2').style.display = 'block';
-            document.getElementById('repeatInfo').textContent = `Press button or press any key.`;
+            document.getElementById('repeatInfo').textContent = `Click on the button above when the red circle disappears.`;
             document.getElementById('blindSpotLocator2').style.display = 'block';
             document.getElementById('blindSpotLocator2').classList.add('locatorStartMoving');
     
             setTimeout(() => {
                 stopCalibration2();
             }, 10000);
-            document.addEventListener("keydown", processBlindSpotX2);
+            //document.addEventListener("keydown", processBlindSpotX2);
             document.getElementById('now2').addEventListener("click", processBlindSpotX2);
         }
         function stopCalibration2() {
@@ -243,14 +249,14 @@ if (myStepCounter == 1){
         function startCalibration3() {
             document.getElementById('repeatCalibration3').style.display = 'none';
             document.getElementById('now3').style.display = 'block';
-            document.getElementById('repeatInfo').textContent = `Press button or press any key.`;
+            document.getElementById('repeatInfo').textContent = `Click on the button above when the red circle disappears.`;
             document.getElementById('blindSpotLocator3').style.display = 'block';
             document.getElementById('blindSpotLocator3').classList.add('locatorStartMoving');
     
             setTimeout(() => {
                 stopCalibration3();
             }, 10000);
-            document.addEventListener("keydown", processBlindSpotX3);
+            //document.addEventListener("keydown", processBlindSpotX3);
             document.getElementById('now3').addEventListener("click", processBlindSpotX3);
         }
     
@@ -284,40 +290,71 @@ if (myStepCounter == 1){
             });
             console.log(mySortedArr);
 
-            if (mySortedArr[0] > window.innerWidth * 0.4) {
-                //mark as failed cali, use width/4
-                myDataHandle[3][4]='failed calibration. smallest measured blindspot > 0.4 * innerWidth or no response. Using 0.25 * innerWidth as blindspot';
-                const blindSpotX = window.innerWidth * 0.25;
-                myDataHandle[3][0] = blindSpotX;
-            } else if (mySortedArr[1] > window.innerWidth * 0.4 && mySortedArr[0] < window.innerWidth * 0.4) {
-                myDataHandle[3][4] = 'smallest value used for blindspot; median value > 0.4 * innerWidth';
-                //use smallest value
-                const blindSpotX = mySortedArr[0];
-                myDataHandle[3][0] = blindSpotX;
+            if (myDataHandle[3][5] == 1) {
+                if (mySortedArr[0] > window.innerWidth * 0.3) {
+                    //mark as failed cali, use width/4
+                    myDataHandle[3][4]='failed calibration. smallest measured blindspot in both rounds > 0.3 * innerWidth or no response. Using 0.25 * innerWidth as blindspot';
+                    const blindSpotX = window.innerWidth * 0.25;
+                    myDataHandle[3][0] = blindSpotX;
+                    processData();
+                } else if (mySortedArr[1] > window.innerWidth * 0.3 && mySortedArr[0] < window.innerWidth * 0.3) {
+                    myDataHandle[3][4] = '2nd round smallest value used for blindspot; median value > 0.3 * innerWidth';
+                    //use smallest value
+                    const blindSpotX = mySortedArr[0];
+                    myDataHandle[3][0] = blindSpotX;
+                    processData();
+                } else {
+                    myDataHandle[3][4] = '2nd round median value used for blindspot';
+                    //use median
+                    const blindSpotX = mySortedArr[1];
+                    myDataHandle[3][0] = blindSpotX;
+                    processData();
+                }
+
             } else {
-                myDataHandle[3][4] = 'median value used for blindspot';
-                //use median
-                const blindSpotX = mySortedArr[1];
-                myDataHandle[3][0] = blindSpotX;
+                if (mySortedArr[0] > window.innerWidth * 0.3) {
+                    //error msg: move closer to screen, redo test. 
+                    myDataHandle[3][4]='first round calibration failed; small value > 0.3 * innerWidth or no response.';
+                    document.getElementById('errorBS1').textContent = 'Please move your head closer to the screen and redo calibration by pressing the button above.';
+                    document.getElementById('redoBlindSpotCalibration').style.display = 'block';
+                } else if (mySortedArr[1] > window.innerWidth * 0.3 && mySortedArr[0] < window.innerWidth * 0.3) {
+                    myDataHandle[3][4] = 'first round smallest value used for blindspot; median value > 0.3 * innerWidth';
+                    //use smallest value
+                    const blindSpotX = mySortedArr[0];
+                    myDataHandle[3][0] = blindSpotX;
+                    processData();
+                } else {
+                    myDataHandle[3][4] = 'first round median value used for blindspot';
+                    //use median
+                    const blindSpotX = mySortedArr[1];
+                    myDataHandle[3][0] = blindSpotX;
+                    processData();
+                }
+
             }
-            localStorage.setItem('myDataHandle', JSON.stringify(myDataHandle));
-            console.log(myDataHandle[3][4]);
-            console.log('registered blindspot = ' + myDataHandle[3][0]);
-            document.getElementById('blindSpotCalibrationStartGVO').style.display = 'block';
+
+
+            function processData(){
+                localStorage.setItem('myDataHandle', JSON.stringify(myDataHandle));
+                console.log(myDataHandle[3][4]);
+                console.log('registered blindspot = ' + myDataHandle[3][0]);
+                //document.getElementById('blindSpotCalibrationStartGVO').style.display = 'block';
+                document.getElementById('repeatInfo').textContent = `Press spacebar to start test.`;
+                startGVOButton.addEventListener('click', buttonClicked);
+                document.addEventListener('keydown', function(event) {
+                    if (event.code === 'Space' || event.key === ' ') {
+                        console.log('spacebar pressed');
+                        event.preventDefault();
+                        buttonClicked();
+                    }
+                });
+            }
 
             function buttonClicked(event) {
                 //event.preventDefault();
                 openNewWindow();
             }
     
-            startGVOButton.addEventListener('click', buttonClicked);
-            document.addEventListener('keydown', function(event) {
-                if (event.code === 'Space' || event.key === ' ') {
-                    console.log('spacebar pressed');
-                    event.preventDefault();
-                    buttonClicked();
-                }
-            });
 
             //code for implementing statistical tests for measurements outliers
             /* 
@@ -380,6 +417,8 @@ if (myStepCounter == 1){
         }
     
         function redoCalibration() {
+            myDataHandle[3][5] = 1;
+            localStorage.setItem('myDataHandle', JSON.stringify(myDataHandle));
             window.location.reload();
         }
     
@@ -415,6 +454,7 @@ if (myStepCounter == 1){
             openNewWindow();
         }
     
+        startGVOButton.style.display = 'none';
         startGVOButton.addEventListener('click', buttonClicked);
         document.addEventListener('keydown', function(event) {
             if (event.code === 'Space' || event.key === ' ') {

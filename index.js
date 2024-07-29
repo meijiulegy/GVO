@@ -137,5 +137,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
         localStorage.setItem('myDataHandle', JSON.stringify(myDataHandle));
     }
 
+    practiceRoundButton.style.display = 'none';
     practiceRoundButton.addEventListener('click', buttonClicked);
 });
