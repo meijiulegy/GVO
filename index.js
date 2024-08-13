@@ -124,6 +124,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }));
 
     document.addEventListener('keydown', function(event) {
+        if (event.code === 'Space' || event.key === ' ') {
+            event.preventDefault();
+        }
+
         if (readyCheckbox.checked && (event.code === 'Space' || event.key === ' ')) {
             console.log('spacebar pressed');
             event.preventDefault();

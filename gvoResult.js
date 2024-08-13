@@ -167,6 +167,12 @@ function openNewWindow() {
   );
 }
 
+let methodSeq = myDataHandle[1][3];
+let testCompleted = methodSeq.indexOf(myStepCounter) + 1;
+if (testCompleted == 4) {
+  nextButton.textContent = 'Next';
+}
+
 showResults(numRows,numColumns);
 nextButton.addEventListener('click', openNewWindow)
 localStorage.removeItem('myGvoMatrix');
