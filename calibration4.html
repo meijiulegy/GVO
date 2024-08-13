@@ -7,15 +7,16 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <H1>Calibration Method 4</H1>
+    <H1>Calibration with Head Movements</H1>
     <H3>Instructions:</H3>
     <ul>
         <li>You may take a break before proceeding.</li>
+        <li>Please return to a comfortable sitting position.</li>
         <li>Fixate the chosen test eye on the yellow target below and cover the other eye.</li>
         <li><strong>Move your head back and forth until the red dot disappears.</strong></li>
         <li>Keep your head still in this position.</li>
         <li>After the following visual field test, you will be asked to assign a score to this distance calibration method based on ease of use.</li>
-        <li><strong>Press spacebar</strong> to start the test. </li>
+        <li>When ready, <strong>tick the "ready" checkbox and then press spacebar</strong> to start the test. </li>
     </ul><br>
 
     <div class="blindSpotCalibrationField">
@@ -26,6 +27,8 @@
     <br>
 
     <div id="buttonsContainer">
+        <input type="checkbox" id="ready">
+        <label for="ready">Ready</label><br>
         <button id="blindSpotCalibrationStartGVO">start test</button>
     </div>
     

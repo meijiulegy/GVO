@@ -99,6 +99,7 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', (event) => {
     const practiceRoundButton = document.getElementById("practiceRoundButton");
     let testEyeRad = document.querySelectorAll("input[name='testEye']");
+    const readyCheckbox = document.getElementById("ready");
     let testEye;
 
     function openNewWindow() {  
@@ -111,27 +112,46 @@ document.addEventListener('DOMContentLoaded', (event) => {
     
     function buttonClicked(event) {
         //event.preventDefault();
-        registerTestEye();
+        registerTestEye(); //also registers default blindspot location and calibration method sequence
         openNewWindow();
     }
 
     testEyeRad.forEach(rb => rb.addEventListener("change", function(){
-        document.addEventListener('keydown', function(event) {
-            if (event.code === 'Space' || event.key === ' ') {
-                console.log('spacebar pressed');
-                event.preventDefault();
-                buttonClicked();
-            }
-        });
+        readyCheckbox.disabled = false;
         practiceRoundButton.disabled = false;
         testEye = document.querySelector("input[name='testEye']:checked").value;
         console.log('testEye = ' + testEye);
     }));
 
+    document.addEventListener('keydown', function(event) {
+        if (readyCheckbox.checked && (event.code === 'Space' || event.key === ' ')) {
+            console.log('spacebar pressed');
+            event.preventDefault();
+            buttonClicked();
+        }
+    });
+
+    //also registers default blindspot location and calibration method sequence
     function registerTestEye(){
         myDataHandle[0][0] = blindSpotX;
         myDataHandle[0][2] = parseInt(testEye);
+        let randomInt = Math.floor(Math.random() * 4) + 1;
+        switch(randomInt) {
+            case 1:
+                myDataHandle[1][3] = [1,2,3,4,5];
+                break;
+            case 2:
+                myDataHandle[1][3] = [2,1,4,3,5];
+                break;
+            case 3:
+                myDataHandle[1][3] = [3,4,1,2,5];
+                break;
+            case 4:
+                myDataHandle[1][3] = [4,3,2,1,5];
+                break;
+          }
         console.log(myDataHandle);
+        console.log(myDataHandle[1][3]);
         localStorage.setItem('myStepCounter', JSON.stringify(myStepCounter));
         localStorage.setItem('blindSpotX', JSON.stringify(blindSpotX));
         localStorage.setItem('myDataHandle', JSON.stringify(myDataHandle));

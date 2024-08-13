@@ -2,6 +2,7 @@
  //parse stored data
 const myStoredDataHandle = localStorage.getItem('myDataHandle');
 const myDataHandle = JSON.parse(myStoredDataHandle);
+console.log(myDataHandle);
 
 const myStoredStepCounter = localStorage.getItem('myStepCounter');
 let myStepCounter = JSON.parse(myStoredStepCounter);
@@ -9,14 +10,9 @@ const resultCircleDiameter = "10px";
 const resultDiagramWidth = 600;
 let resultDiagramHeight = resultDiagramWidth * window.innerHeight/window.innerWidth; //change to = resultDiagramWidth for a square diagram
 let buttonToShow;
-
-function showButton(){
-  if (myStepCounter >= 5) {
-    document.getElementById("goToEndInstructions").style.display = "block";
-  } else {
-    buttonToShow = 'goToCalibration' + myStepCounter.toString();
-    document.getElementById(buttonToShow).style.display = "block";
-  }
+let nextButton = document.getElementById("nextButton");
+if (myStepCounter == 0){
+  nextButton.disabled = false;
 }
 
 function adjustCaliReminder(a) {
@@ -27,30 +23,30 @@ function adjustCaliReminder(a) {
 
   switch(a) {
     case 1:
-      document.getElementById('reminder').textContent = `Please assign a score to the previous distance calibration method (${cali1}) based on ease of use:`
+      document.getElementById('reminder').textContent = `Please assign a score to the previous distance calibration method (${cali1}) based on ease of use:`;
       break;
     case 2:
-      document.getElementById('reminder').textContent = `Please assign a score to the previous distance calibration method (${cali2}) based on ease of use:`
+      document.getElementById('reminder').textContent = `Please assign a score to the previous distance calibration method (${cali2}) based on ease of use:`;
       break;
     case 3:
-      document.getElementById('reminder').textContent = `Please assign a score to the previous distance calibration method (${cali3}) based on ease of use:`
+      document.getElementById('reminder').textContent = `Please assign a score to the previous distance calibration method (${cali3}) based on ease of use:`;
       break;
     case 4:
-      document.getElementById('reminder').textContent = `Please assign a score to the previous distance calibration method (${cali4}) based on ease of use:`
+      document.getElementById('reminder').textContent = `Please assign a score to the previous distance calibration method (${cali4}) based on ease of use:`;
       break;
     default:
-      document.getElementById('reminder').textContent = `Please assign a score to the previous distance calibration method based on ease of use:`
+      document.getElementById('reminder').textContent = `Please assign a score to the previous distance calibration method based on ease of use:`;
       break;
   }
 }
 
-if (myStepCounter == 1) {
+if (myStepCounter == 0) {
   document.getElementById('userScoreContainer').style.display = 'none';
 }
 
 
 if (myStoredDataHandle) {
-  myParsedMatrix = myDataHandle[myStepCounter-1][1];
+  myParsedMatrix = myDataHandle[myStepCounter][1];
   numRows = myDataHandle[0][3];
   numColumns = myDataHandle[0][4];
   console.log(myParsedMatrix); 
@@ -96,7 +92,7 @@ function showResults(numRows, numColumns) {
     }
   }
 
-  if (myStepCounter != 1) {
+  if (myStepCounter != 0) {
     for (let i = 0; i < 9; i++) {
       const section = document.createElement('div');
       section.classList.add('section');
@@ -130,30 +126,47 @@ function showResults(numRows, numColumns) {
     resultDiagram.appendChild(midPoint);
   }
 
-  let buttonToEnable;
-  if (myStepCounter >= 5) {
-    buttonToEnable = 'goToEndInstructions';
-  } else {
-    buttonToEnable = 'goToCalibration' + myStepCounter.toString();
-  }
-
-  const toNextCalibration = document.getElementById(buttonToEnable);
   let userScoreRad = document.querySelectorAll("input[name='userScore']");
   let userScore;
 
   userScoreRad.forEach(rb => rb.addEventListener("change", function(){
-      toNextCalibration.disabled = false;
+      nextButton.disabled = false;
       userScore = document.querySelector("input[name='userScore']:checked").value;
       console.log('userScore = ' + userScore);
-      myDataHandle[myStepCounter-1][2] = parseInt(userScore);
+      myDataHandle[myStepCounter][2] = [parseInt(userScore)];
       console.log(myDataHandle);
       localStorage.setItem('myDataHandle', JSON.stringify(myDataHandle));
   }));
 
-  adjustCaliReminder(myStepCounter-1);
-  showButton();
+  adjustCaliReminder(myStepCounter);
 }
+
+function openNewWindow() { 
+  let windowName; 
+  let methodSeq = myDataHandle[1][3];
+  if (myStepCounter == 0) {
+    myStepCounter = methodSeq[0];
+    windowName = 'calibration' + myStepCounter.toString() + '.html';
+  }else{
+    let currentIndex = methodSeq.indexOf(myStepCounter);
+    myStepCounter = methodSeq[currentIndex + 1];
+    if (myStepCounter == 5) {
+      windowName = 'scoreRevision.html'
+    } else {
+      windowName = 'calibration' + myStepCounter.toString() + '.html';
+    }
+  }
+
+  console.log('updated stepCounter = ' + myStepCounter);
+  localStorage.setItem('myStepCounter', JSON.stringify(myStepCounter));
+
+  window.open(
+      windowName,
+      'newwindow',
+      `width=${screen.availWidth},height=${screen.availHeight},scrollbars=no,toolbar=no,location=no,directories=no,status=no,menubar=no`
+  );
+}
+
 showResults(numRows,numColumns);
-
-
+nextButton.addEventListener('click', openNewWindow)
 localStorage.removeItem('myGvoMatrix');

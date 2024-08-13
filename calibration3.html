@@ -7,17 +7,18 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <H1>Calibration Method 3</H1>
+    <H1>Calibration with a Moving Dot</H1>
     <H3>Instructions:</H3>
 
     <ul>
         <li>You may take a break before proceeding.</li>
+        <li>Please return to a comfortable sitting position.</li>
         <li>Fixate the chosen test eye on the yellow target below and cover the other eye.</li>
         <li>Upon clicking the 'Start Calibration' button, a red dot will appear and start moving away from the yellow target.</li>
         <li>With test eye fixated on the yellow target, <strong>click on the button when the red circle disappears.</strong></li>
         <li>Repeat this process <strong>3 times</strong> by pressing "Repeat" while keeping your head still. </li>
         <li>You may be instructed to redo the initial 3 measurements after adjusting your position. </li>
-        <li>After the calibration, <strong>press spacebar</strong> to start the test. After the following visual field test, you will be asked to assign a score to this distance calibration method based on ease of use.</li>
+        <li>After the calibration, <strong>tick the "ready" checkbox and then press spacebar</strong> to start the test. After the following visual field test, you will be asked to assign a score to this distance calibration method based on ease of use.</li>
     </ul><br>
 
     <div class="blindSpotCalibrationField">
@@ -38,6 +39,8 @@
         <button id="now3">I can't see it anymore</button>
         <button id="redoBlindSpotCalibration">Redo Calibration</button>
 
+        <input type="checkbox" id="ready">
+        <label for="ready" id="readyLabel">Ready</label>
         <button id="blindSpotCalibrationStartGVO">start test</button>
     </div>
 
@@ -46,7 +49,6 @@
         <p id="errorBS1" style="color: red;"></p>
         <p id="errorBS2" style="color: red;"></p>
     </div>
-    
     
     <script src="calibration.js"></script>
 </body>

@@ -121,7 +121,6 @@
 
         <p>During a visual field test:</p>
         <ul>
-            <li>Dim the lighting in the environment.</li>
             <li>Put on your corrective lenses or reading glasses.</li>
             <li>Keep your head still.</li>
             <li>Cover the eye that is not being tested (do not simply "close" the eye, see figure below), fixate the other eye on the yellow target at the center of the screen at all times.</li>
@@ -134,7 +133,7 @@
         <p>After the later rounds of test, you will also be asked to assign a score to the distance calibration method based on ease of use.</p><br>
 
         <p>Choose below which eye you wish to test. The same eye will be tested for all parts of this study.</p>
-        <p>When ready, <strong>press spacebar</strong> to begin the practice round. The first stimulus will appear after a short delay. Press spacebar everytime you see a stimulus</p>
+        <p>When ready, <strong>tick the "ready" checkbox and then press spacebar</strong> to begin the practice round. The first stimulus will appear after a short delay. Press spacebar everytime you see a stimulus</p>
 
         <p>Choose which eye to test:</p>
         <input type="radio" name="testEye" id="leftEye" value="-1">
@@ -143,7 +142,8 @@
         <label for="rightEye">Right eye</label>
         <br>
         <br>
-    
+        <input type="checkbox" id="ready" disabled>
+        <label for="ready">Ready</label>
         <button disabled id="practiceRoundButton">To practice round</button>
     </form>
     <br>

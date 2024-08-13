@@ -1,12 +1,9 @@
 const myStoredStepCounter = localStorage.getItem('myStepCounter');
 let myStepCounter = JSON.parse(myStoredStepCounter);
 console.log('myStepCounter = ' + myStepCounter);
-myStepCounter +=1;
-console.log('myStepCounter + 1 = ' + myStepCounter);
-localStorage.setItem('myStepCounter', JSON.stringify(myStepCounter));
 const myStoredDataHandle = localStorage.getItem('myDataHandle');
 const myDataHandle = JSON.parse(myStoredDataHandle);
-let blindSpotX = myDataHandle[myStepCounter-1][0];
+let blindSpotX = myDataHandle[myStepCounter][0];
 //blindSpotX = 400; //for development
 //myDataHandle[0][2] = -1;//for development
 //myStepCounter = 3; //for development 
@@ -15,9 +12,9 @@ console.log('blindSpotX at load = ' + blindSpotX);
 const gvoStartDeley = 2000; //delay before 1st stimulus
 const acceptedResponseDeley = 1000; //response delayed after stimulus is shown must be < stimulusInterval - stimulusIntervalVariation
 const repGvo = 1; //not yet implemented
-const stimulusDuration = 200; //duration of a stimulus, must be << stimulus interval
-const stimulusInterval = 1500; //default 1500, base interval between consecutive stimuli
-const stimulusIntervalVariation = 200; //default 200, random deviation from the set interval
+const stimulusDuration = 200; //duration of a stimulus, default 200
+const stimulusInterval = 200; //default 1500, base interval between consecutive stimuli
+const stimulusIntervalVariation = 0; //default 200, random deviation from the set interval
 const stimulusSize = 3; //goldmann size 1-5, default 3 = 0.43deg diameter, approximated at fixation point. 
 let myParsedMatrix;
 let indices = []; 
@@ -116,7 +113,7 @@ for (let i = 0; i < 3; i++) {
         myGvoMatrix[numRows][3*i + j][0] = 0;
         myGvoMatrix[numRows][3*i + j][1] = String(Math.round((0.5 + userDistance * getTanDeg(2 + (i - 1) * angleFromBlindSpotY)/screen.availHeight)*100)) + "%"; //%top
         myGvoMatrix[numRows][3*i + j][2] = String(Math.round((0.5 + myDataHandle[0][2] * userDistance * getTanDeg(15 + (j - 1) * angleFromBlindSpotX)/screen.availWidth)*100)) + "%"; //%left
-        if (myStepCounter != 1){ //not including in practice round
+        if (myStepCounter != 0){ //not including in practice round
             indices.push([numRows, 3*i + j]);
         }
         
@@ -146,7 +143,7 @@ for (let i = 0; i < numRows; i++) {
         gridTop = Math.round((((1/numRows/2 + 1/numRows*i)*2*testFieldHalfHeight/screen.availHeight) + marginTop)*100)
         gridLeft = Math.round((((1/numColumns/2 + 1/numColumns*j)*2*testFieldHalfWidth/screen.availWidth) + marginLeft)*100)
         //skipping around blindspot, response counter set to -1, marked to be skipped by result diagram
-        if (myStepCounter != 1 && gridTop > skipTopMargin && gridTop < skipBottomMargin && gridLeft > skipLeftMargin && gridLeft < skipRightMargin) {
+        if (myStepCounter != 0 && gridTop > skipTopMargin && gridTop < skipBottomMargin && gridLeft > skipLeftMargin && gridLeft < skipRightMargin) {
             myGvoMatrix[i][j][0] = -1; 
             myGvoMatrix[i][j][1] = String(gridTop) + "%";
             myGvoMatrix[i][j][2] = String(gridLeft) + "%"; 
@@ -195,13 +192,12 @@ function runGvo() {
                 //setPosition(myGvoMatrix[numRows][4][1],myGvoMatrix[numRows][4][2]); //for development, show blindspot at the end
                 //document.getElementById('stimulus').style.display = 'block';
                 generateResults();
-                myDataHandle[myStepCounter-1][1] = myGvoMatrix;
+                myDataHandle[myStepCounter][1] = myGvoMatrix;
                 localStorage.setItem('myDataHandle', JSON.stringify(myDataHandle));
                 console.log(myDataHandle);
-                console.log('blindSpotX after test = ' + blindSpotX);
-                localStorage.setItem('myGvoMatrix', JSON.stringify(myGvoMatrix));
-                localStorage.setItem('numRows', JSON.stringify(numRows));
-                localStorage.setItem('numColumns', JSON.stringify(numColumns));
+                //myStepCounter +=1;
+                //console.log('myStepCounter + 1 = ' + myStepCounter);
+                //localStorage.setItem('myStepCounter', JSON.stringify(myStepCounter));
             }, (i+1) * stimulusInterval);
         } else {
             //set position of each stimulus, show it, store the timestamp of each stimulus in myGvoMatrix

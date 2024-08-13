@@ -36,6 +36,7 @@ if (myStepCounter == 1){
         const smallerButton = document.getElementById('smaller');
         const biggerButton = document.getElementById('bigger');
         const startGVOButton = document.getElementById("startGVO");
+        const readyCheckbox = document.getElementById("ready");
 
         let currentWidth = myCardImg.width;
         console.log(currentWidth);
@@ -98,7 +99,7 @@ if (myStepCounter == 1){
 
         function spacebarPressed(event) {
             event.preventDefault();
-            if (event.code === 'Space' || event.key === ' ') {
+            if (readyCheckbox.checked && (event.code === 'Space' || event.key === ' ')) {
                 console.log('spacebar pressed');
                 startButtonClicked();
             }
@@ -130,6 +131,7 @@ if (myStepCounter == 1){
     */
     document.addEventListener('DOMContentLoaded', (event) => {
         const startGVOButton = document.getElementById("startGVO");
+        const readyCheckbox = document.getElementById("ready");
 
         document.getElementById('lineDiv').style.height = 0.2*window.innerWidth + 'px'
         document.getElementById('doubleArrow').style.width = 0.75*window.innerWidth + 'px';
@@ -147,7 +149,8 @@ if (myStepCounter == 1){
         startGVOButton.style.display = 'none';
         startGVOButton.addEventListener('click', buttonClicked);
         document.addEventListener('keydown', function(event) {
-            if (event.code === 'Space' || event.key === ' ') {
+            event.preventDefault();
+            if (readyCheckbox.checked && (event.code === 'Space' || event.key === ' ')) {
                 console.log('spacebar pressed');
                 event.preventDefault();
                 buttonClicked();
@@ -165,6 +168,9 @@ if (myStepCounter == 1){
         document.getElementById('startBlindSpotCalibration').style.display = 'block';
         document.getElementById('repeatInfo').textContent = `Press button to begin.`;
         const startGVOButton = document.getElementById('blindSpotCalibrationStartGVO');
+        const readyCheckbox = document.getElementById("ready");
+        readyCheckbox.style.display = 'none';
+        document.getElementById("readyLabel").style.display = 'none';
         const root = document.documentElement;
         root.style.setProperty('--blindSpotMovement', myDataHandle[0][2] * window.innerWidth / 2 + "px");
         let fixationPositionX;
@@ -339,10 +345,13 @@ if (myStepCounter == 1){
                 console.log(myDataHandle[3][4]);
                 console.log('registered blindspot = ' + myDataHandle[3][0]);
                 //document.getElementById('blindSpotCalibrationStartGVO').style.display = 'block';
-                document.getElementById('repeatInfo').textContent = `Press spacebar to start test.`;
+                readyCheckbox.style.display = 'inline';
+                document.getElementById("readyLabel").style.display = 'inline';
+                document.getElementById('repeatInfo').textContent = `Tick the checkbox, then press spacebar to start test.`;
                 startGVOButton.addEventListener('click', buttonClicked);
                 document.addEventListener('keydown', function(event) {
-                    if (event.code === 'Space' || event.key === ' ') {
+                    event.preventDefault();
+                    if (readyCheckbox.checked && (event.code === 'Space' || event.key === ' ')) {
                         console.log('spacebar pressed');
                         event.preventDefault();
                         buttonClicked();
@@ -435,6 +444,7 @@ if (myStepCounter == 1){
 } else if (myStepCounter == 4){
     document.addEventListener('DOMContentLoaded', () => {
         const startGVOButton = document.getElementById('blindSpotCalibrationStartGVO');
+        const readyCheckbox = document.getElementById("ready");
         let fixationPositionX;
         let blindSpotPositionX;
         let blindSpotXPercent;
@@ -457,7 +467,8 @@ if (myStepCounter == 1){
         startGVOButton.style.display = 'none';
         startGVOButton.addEventListener('click', buttonClicked);
         document.addEventListener('keydown', function(event) {
-            if (event.code === 'Space' || event.key === ' ') {
+            event.preventDefault();
+            if (readyCheckbox.checked && (event.code === 'Space' || event.key === ' ')) {
                 console.log('spacebar pressed');
                 event.preventDefault();
                 buttonClicked();

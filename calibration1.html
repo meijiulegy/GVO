@@ -7,15 +7,16 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <H1>Calibration Method 1</H1>
+    <H1>Calibration with a Card</H1>
     
     <H3>Instructions:</H3>
     <ul>
         <li>You may take a break before proceeding.</li>
+        <li>Please return to a comfortable sitting position.</li>
         <li>Press - or +  button to resize the card below to match the size of a standard ID/bank card.</li>
-        <li>Place your eyes at <strong>30 cm</strong> from screen (length of the long side of an A4 paper) and hold still during the following test.</li>
+        <li>Place your eyes at <strong>30 cm</strong> from screen (length of the long side of an A4 paper) and hold your head still during the following test.</li>
         <li>After the following visual field test, you will be asked to assign a score to this distance calibration method based on ease of use.</li>
-        <li>When ready, cover the eye that is not being tested, and <strong>press spacebar</strong> to start the test.</li>
+        <li>When ready, cover the eye that is not being tested, <strong>tick the "ready" checkbox and then press spacebar</strong> to start the test.</li>
     </ul>
 
     <div class = "cardResizer">
@@ -27,6 +28,8 @@
     </div><br>
     <p id="errorMsg" style="color: red;"></p>
 
+    <input type="checkbox" id="ready">
+    <label for="ready">Ready</label>
     <button id="startGVO">start test</button>
     
     <script src="calibration.js"></script>
