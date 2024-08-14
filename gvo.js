@@ -187,7 +187,7 @@ function runGvo() {
             //at the end of run: show results button, generate results, local storage
             setTimeout(function(){
                 document.removeEventListener("keydown", keyDownEvent);
-                document.removeEventListener("click", keyDownEvent);
+                //document.removeEventListener("click", keyDownEvent);
                 document.getElementById('showResults').style.display = 'block';
                 //setPosition(myGvoMatrix[numRows][4][1],myGvoMatrix[numRows][4][2]); //for development, show blindspot at the end
                 //document.getElementById('stimulus').style.display = 'block';
@@ -220,10 +220,13 @@ delayedRunGvo();
     
 //log timestamp of all key presses in an array
 document.addEventListener("keydown", keyDownEvent);
-document.addEventListener("click", keyDownEvent);
-function keyDownEvent(){
-    playAudio();
-    keyPressLog.push(Date.now());
+//document.addEventListener("click", keyDownEvent);
+function keyDownEvent(event){
+    event.preventDefault();
+    if (event.code === 'Space' || event.key === ' ') {
+        playAudio();
+        keyPressLog.push(Date.now());
+    }
 }
 
 //register a +1 if at least 1 key press is logged within acceptedResponseDeley after the stimulus is shown
