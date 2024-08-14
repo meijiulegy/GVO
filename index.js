@@ -1,15 +1,6 @@
+localStorage.removeItem('myDataHandle');
 let myStepCounter = 0;
 let blindSpotX = screen.availWidth/4;
-
-/*
-const myStoredDataHandle = localStorage.getItem('myDataHandle');
-if (myStoredDataHandle) {
-    const myDataHandle = JSON.parse(myStoredDataHandle);
-
-}else{
-    const myDataHandle = Array.from({length: 5}, () => Array.from({ length: 4}, () => []));
-}
-*/
 
 const myDataHandle = Array.from({length: 5}, () => Array.from({ length: 6}, () => []));
 console.log('myStepCounter = ' + myStepCounter);
