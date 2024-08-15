@@ -37,6 +37,14 @@ if (myStepCounter == 1){
         const biggerButton = document.getElementById('bigger');
         const startGVOButton = document.getElementById("startGVO");
         const readyCheckbox = document.getElementById("ready");
+        
+        if (myDataHandle[0][2] == -1) {
+            document.getElementById("chosenEye").innerHTML = 'When ready, cover your right eye, <strong>tick the "ready" checkbox and then press spacebar</strong> to start the test.';
+        }else if(myDataHandle[0][2] == 1) {
+            document.getElementById("chosenEye").innerHTML = 'When ready, cover your left eye, <strong>tick the "ready" checkbox and then press spacebar</strong> to start the test.';
+        }else{
+            document.getElementById("chosenEye").innerHTML = 'When ready, cover the eye that is not being tested, <strong>tick the "ready" checkbox and then press spacebar</strong> to start the test.';
+        }
 
         let currentWidth = myCardImg.width;
         console.log(currentWidth);
@@ -132,6 +140,13 @@ if (myStepCounter == 1){
     document.addEventListener('DOMContentLoaded', (event) => {
         const startGVOButton = document.getElementById("startGVO");
         const readyCheckbox = document.getElementById("ready");
+        if (myDataHandle[0][2] == -1) {
+            document.getElementById("chosenEye").innerHTML = 'When ready, cover your right eye, <strong>tick the "ready" checkbox and then press spacebar</strong> to start the test.';
+        }else if(myDataHandle[0][2] == 1) {
+            document.getElementById("chosenEye").innerHTML = 'When ready, cover your left eye, <strong>tick the "ready" checkbox and then press spacebar</strong> to start the test.';
+        }else{
+            document.getElementById("chosenEye").innerHTML = 'When ready, cover the eye that is not being tested, <strong>tick the "ready" checkbox and then press spacebar</strong> to start the test.';
+        }
 
         document.getElementById('lineDiv').style.height = 0.2*window.innerWidth + 'px'
         document.getElementById('doubleArrow').style.width = 0.75*window.innerWidth + 'px';
@@ -177,6 +192,17 @@ if (myStepCounter == 1){
         let blindSpotPositionX;
         let arrayBS = [];
         const beep = document.getElementById("beep");
+
+        if (myDataHandle[0][2] == -1) {
+            document.getElementById("chosenEye1").innerHTML = 'Cover your right eye, and fixate your left eye on the yellow target below.';
+            document.getElementById("chosenEye2").innerHTML = 'With your left eye fixated on the yellow target, <strong>click on the button when the red circle disappears.</strong>';
+        }else if(myDataHandle[0][2] == 1) {
+            document.getElementById("chosenEye1").innerHTML = 'Cover your left eye, and fixate your right eye on the yellow target below.';
+            document.getElementById("chosenEye2").innerHTML = 'With your right eye fixated on the yellow target, <strong>click on the button when the red circle disappears.</strong>';
+        }else{
+            document.getElementById("chosenEye1").innerHTML = 'Fixate the chosen test eye on the yellow target below and cover the other eye.';
+            document.getElementById("chosenEye2").innerHTML = 'With test eye fixated on the yellow target, <strong>click on the button when the red circle disappears.</strong>';
+        }
     
         console.log('fixationPoint is at ' + document.getElementById('fixationPoint').getBoundingClientRect().left);
     
@@ -443,6 +469,15 @@ if (myStepCounter == 1){
 
 } else if (myStepCounter == 4){
     document.addEventListener('DOMContentLoaded', () => {
+
+        if (myDataHandle[0][2] == -1) {
+            document.getElementById("chosenEye").innerHTML = 'Cover your right eye, and fixate your left eye on the yellow target below.';
+        }else if(myDataHandle[0][2] == 1) {
+            document.getElementById("chosenEye").innerHTML = 'Cover your left eye, and fixate your right eye on the yellow target below.';
+        }else{
+            document.getElementById("chosenEye").innerHTML = 'Fixate the chosen test eye on the yellow target below and cover the other eye.';
+        }
+
         const startGVOButton = document.getElementById('blindSpotCalibrationStartGVO');
         const readyCheckbox = document.getElementById("ready");
         let fixationPositionX;
