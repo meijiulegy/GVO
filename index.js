@@ -1,6 +1,9 @@
 localStorage.removeItem('myDataHandle');
 let myStepCounter = 0;
 let blindSpotX = screen.availWidth/4;
+console.log(window.innerWidth);
+console.log(window.innerHeight);
+
 
 const myDataHandle = Array.from({length: 5}, () => Array.from({ length: 6}, () => []));
 console.log('myStepCounter = ' + myStepCounter);
@@ -130,7 +133,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     function registerTestEye(){
         myDataHandle[0][0] = blindSpotX;
         myDataHandle[0][2] = parseInt(testEye);
-        let randomInt = Math.floor(Math.random() * 4) + 1;
+        let randomInt = Math.floor(Math.random() * 1) + 1;
         switch(randomInt) {
             case 1:
                 myDataHandle[1][3] = [1,2,3,4,5];
